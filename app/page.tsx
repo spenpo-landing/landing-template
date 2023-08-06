@@ -14,6 +14,10 @@ const Home: NextPage = () => {
       headshotSrc={`/${process.env.NEXT_PUBLIC_HEADSHOT}`}
       actionClick={() => router.push(process.env.NEXT_PUBLIC_ACTION || "/")}
       actionText={process.env.NEXT_PUBLIC_ACTION_STATEMENT || "not found"}
+      backgroundColor={process.env.NEXT_PUBLIC_BG_COLOR}
+      backgroundImage={process.env.NEXT_PUBLIC_BG_IMAGE}
+      accentColor={process.env.NEXT_PUBLIC_ACCENT_COLOR}
+      secondaryAccentColor={process.env.NEXT_PUBLIC_SECONDARY_ACCENT_COLOR}
     />
   );
 };
