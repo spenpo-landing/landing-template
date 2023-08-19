@@ -19,11 +19,16 @@
     "argon2": "^0.31.0",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
-    "next": "13.4.12",
+    "next": "^13.4.19",
     "next-auth": "^4.23.0",
     "react": "18.2.0",
+    "react-color": "^2.19.3",
     "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-social-icons": "^5.15.0",
     "typescript": "5.1.6"
+  },
+  "devDependencies": {
+    "@types/react-color": "^3.0.6"
   }
 }

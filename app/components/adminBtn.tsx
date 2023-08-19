@@ -9,14 +9,17 @@ const config = {
   unauthenticated: {
     icon: <AdminPanelSettingsIcon />,
     href: "/api/auth/signin",
+    opacity: 0.5,
   },
   authenticated: {
     icon: <LogoutIcon />,
     href: "/api/auth/signout",
+    opacity: 1,
   },
   loading: {
     icon: <PendingIcon />,
     href: "/",
+    opacity: 0.5,
   },
 };
 
@@ -26,7 +29,11 @@ const AdminBtn: React.FC = () => {
     !JSON.parse(process.env.NEXT_PUBLIC_HIDE_ADMIN || "") && (
       <IconButton
         href={config[session.status].href}
-        sx={{ position: "absolute", right: 0, opacity: 0.5 }}
+        sx={{
+          position: "absolute",
+          right: 0,
+          opacity: config[session.status].opacity,
+        }}
       >
         {config[session.status].icon}
       </IconButton>
