@@ -1,7 +1,7 @@
-import { Box } from "@mui/material"
-import React, { forwardRef } from "react"
-import { SocialIcon } from "react-social-icons"
-import { SOCIAL_ICON_SX } from "../functions"
+import { Box } from "@mui/material";
+import React, { forwardRef } from "react";
+import { SocialIcon } from "react-social-icons";
+import { SOCIAL_ICON_SX } from "../functions";
 
 export const SocialBtn: React.FC<{ url: string; color: string }> = forwardRef(
   ({ url, color, ...rest }, ref) => {
@@ -19,11 +19,13 @@ export const SocialBtn: React.FC<{ url: string; color: string }> = forwardRef(
         <SocialIcon
           url={url}
           onClick={(e) => {
-            e.preventDefault()
-            window.open(url, "_blank", "noopener,noreferrer")
+            e.preventDefault();
+            window.open(url, "_blank", "noopener,noreferrer");
           }}
         />
       </Box>
-    )
+    );
   }
-)
+);
+
+SocialBtn.displayName = "SocialBtn";

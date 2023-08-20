@@ -218,3 +218,5 @@ export const ActionBtn: React.FC = () => {
     </>
   );
 };
+
+Btn.displayName = "Btn";

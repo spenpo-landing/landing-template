@@ -38,7 +38,7 @@ export const EditableText: React.FC<{
   const { SECONDARY_ACCENT_COLOR, editable } = useContext(LandingPageContext);
   const [edit, setEdit] = useState(false);
   const [editableText, setEditableText] = useState<string | undefined>(
-    getSet?.getter()
+    getSet?.useGetter()
   );
 
   const confirm = useCallback(() => {

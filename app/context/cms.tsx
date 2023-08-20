@@ -66,78 +66,79 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
   const [password, setPassword] = useState<string>();
 
   const nameGetSet: LandingCms["name"] = {
-    getter: () => useMemo(() => clientName, [clientName]),
+    useGetter: () => useMemo(() => clientName, [clientName]),
     setter: (name: string) => {
       setClientName(name);
     },
   };
 
   const linkNewTabGetSet: LandingCms["linkNewTab"] = {
-    getter: () => useMemo(() => JSON.parse(linkNewTab), [linkNewTab]),
+    useGetter: () => useMemo(() => JSON.parse(linkNewTab), [linkNewTab]),
     setter: (newTab: boolean) => {
       setLinkNewTab(JSON.stringify(newTab));
     },
   };
 
   const socialsGetSet: LandingCms["socialUrls"] = {
-    getter: () => useMemo(() => JSON.parse(socialUrls), [socialUrls]),
+    useGetter: () => useMemo(() => JSON.parse(socialUrls), [socialUrls]),
     setter: (socials?: string[]) => {
       setSocialUrls(JSON.stringify(socials));
     },
   };
 
   const titleGetSet: LandingCms["title"] = {
-    getter: () => useMemo(() => title, [title]),
+    useGetter: () => useMemo(() => title, [title]),
     setter: setTitle,
   };
 
   const subtitleGetSet: LandingCms["subtitle"] = {
-    getter: () => useMemo(() => subtitle, [subtitle]),
+    useGetter: () => useMemo(() => subtitle, [subtitle]),
     setter: setSubtitle,
   };
 
   const actionDestinationGetSet: LandingCms["actionDestination"] = {
-    getter: () => useMemo(() => actionDestination, [actionDestination]),
+    useGetter: () => useMemo(() => actionDestination, [actionDestination]),
     setter: setActionDestination,
   };
 
   const actionStatementGetSet: LandingCms["actionStatement"] = {
-    getter: () => useMemo(() => actionStatement, [actionStatement]),
+    useGetter: () => useMemo(() => actionStatement, [actionStatement]),
     setter: setActionStatement,
   };
 
   const headshotContentGetSet: LandingCms["headshotContent"] = {
-    getter: () => useMemo(() => headshotContent, [headshotContent]),
+    useGetter: () => useMemo(() => headshotContent, [headshotContent]),
     setter: setHeadshotContent,
   };
 
   const headshotFileNameGetSet: LandingCms["headshotFileName"] = {
-    getter: () => useMemo(() => headshotFileName, [headshotFileName]),
+    useGetter: () => useMemo(() => headshotFileName, [headshotFileName]),
     setter: setHeadshotFileName,
   };
 
   const headshotSrcGetSet: LandingCms["headshotSrc"] = {
-    getter: () => useMemo(() => headshotSrc, [headshotSrc]),
+    useGetter: () => useMemo(() => headshotSrc, [headshotSrc]),
     setter: setHeadshotSrc,
   };
 
   const backgroundColorGetSet: LandingCms["backgroundColor"] = {
-    getter: () => useMemo(() => backgroundColor, [backgroundColor]),
+    useGetter: () => useMemo(() => backgroundColor, [backgroundColor]),
     setter: setBackgroundColor,
   };
 
   const backgroundImageGetSet: LandingCms["backgroundImage"] = {
-    getter: () => useMemo(() => backgroundImage, [backgroundImage]),
+    useGetter: () => useMemo(() => backgroundImage, [backgroundImage]),
     setter: setBackgroundImage,
   };
 
   const accentColorGetSet: LandingCms["accentColor"] = {
-    getter: () => useMemo(() => accentColor, [accentColor]),
+    useGetter: () => useMemo(() => accentColor, [accentColor]),
     setter: setAccentColor,
   };
 
   const secondaryAccentColorGetSet: LandingCms["secondaryAccentColor"] = {
-    getter: () => useMemo(() => secondaryAccentColor, [secondaryAccentColor]),
+    useGetter: () =>
+      useMemo(() => secondaryAccentColor, [secondaryAccentColor]),
     setter: setSecondaryAccentColor,
   };
 
