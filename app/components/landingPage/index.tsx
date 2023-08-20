@@ -7,7 +7,7 @@ import { Headshot } from "./components/headshot";
 import { LandingWrapper } from "./components/landingWrapper";
 
 export type CmsGetSet<T = string> = {
-  useGetter: () => T;
+  getter: () => T;
   setter: (prop: T) => void;
 };
 

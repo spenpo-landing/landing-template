@@ -71,37 +71,37 @@ export const LandingPageContextProvider: React.FC<{
   const editActionStatement = useState(false);
   const editDestination = useState(false);
 
-  const ACCENT_COLOR = cms?.accentColor.useGetter() || accentColor;
+  const ACCENT_COLOR = cms?.accentColor.getter() || accentColor;
   const SECONDARY_ACCENT_COLOR =
-    cms?.secondaryAccentColor.useGetter() || secondaryAccentColor;
-  const ACTION_STATEMENT = cms
-    ? cms.actionStatement.useGetter()
-    : actionStatement;
+    cms?.secondaryAccentColor.getter() || secondaryAccentColor;
+  const ACTION_STATEMENT = cms ? cms.actionStatement.getter() : actionStatement;
   const ACTION_DESTINATION = cms
-    ? cms.actionDestination.useGetter()
+    ? cms.actionDestination.getter()
     : actionDestination;
-  const BACKGROUND_IMAGE = cms?.backgroundImage.useGetter() || backgroundImage;
-  const BACKGROUND_COLOR = cms?.backgroundColor.useGetter() || backgroundColor;
-  const HEADSHOT_SRC = cms ? cms.headshotSrc.useGetter() : headshotSrc;
-  const TITLE = cms ? cms.title.useGetter() : title;
-  const NAME = cms ? cms.name.useGetter() : name;
-  const SUBTITLE = cms ? cms.subtitle.useGetter() : subtitle;
-  const SOCIAL_URLS = cms ? cms.socialUrls.useGetter() : socialUrls;
-  const LINK_NEW_TAB = cms ? cms.linkNewTab.useGetter() : linkNewTab;
+  const BACKGROUND_IMAGE = cms?.backgroundImage.getter() || backgroundImage;
+  const BACKGROUND_COLOR = cms?.backgroundColor.getter() || backgroundColor;
+  const HEADSHOT_SRC = cms ? cms.headshotSrc.getter() : headshotSrc;
+  const TITLE = cms ? cms.title.getter() : title;
+  const NAME = cms ? cms.name.getter() : name;
+  const SUBTITLE = cms ? cms.subtitle.getter() : subtitle;
+  const SOCIAL_URLS = cms ? cms.socialUrls.getter() : socialUrls;
+  const LINK_NEW_TAB = cms ? cms.linkNewTab.getter() : linkNewTab;
 
   const TopComponents = useMemo(() => {
     if (!hideButtons[0]) return topComponents;
-  }, [hideButtons]);
+  }, [hideButtons, topComponents]);
 
-  const ADD_BTN_SX = {
-    stroke: ACCENT_COLOR,
-    fill: ACCENT_COLOR,
-    ":hover": {
-      transform: "scale(1.08)",
-      stroke: SECONDARY_ACCENT_COLOR,
-      fill: SECONDARY_ACCENT_COLOR,
-    },
-  };
+  const ADD_BTN_SX = useMemo(() => {
+    return {
+      stroke: ACCENT_COLOR,
+      fill: ACCENT_COLOR,
+      ":hover": {
+        transform: "scale(1.08)",
+        stroke: SECONDARY_ACCENT_COLOR,
+        fill: SECONDARY_ACCENT_COLOR,
+      },
+    };
+  }, [ACCENT_COLOR, SECONDARY_ACCENT_COLOR]);
 
   const contextValue: LandingPageContextProps = useMemo(() => {
     return {
@@ -151,6 +151,10 @@ export const LandingPageContextProvider: React.FC<{
     SUBTITLE,
     SOCIAL_URLS,
     LINK_NEW_TAB,
+    TopComponents,
+    cms,
+    editable,
+    ADD_BTN_SX,
   ]);
 
   return (

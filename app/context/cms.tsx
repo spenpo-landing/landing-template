@@ -1,5 +1,5 @@
 "use client";
-import { LandingCms } from "../components/landingPage";
+import { CmsGetSet, LandingCms } from "../components/landingPage";
 import { useLandEnvVars } from "../hooks/useEnvVariables";
 import { useSession } from "next-auth/react";
 import React, {
@@ -23,41 +23,25 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const session = useSession();
 
-  const [clientName, setClientName] = useState(
-    process.env.NEXT_PUBLIC_NAME || "not found"
-  );
-  const [title, setTitle] = useState(
-    process.env.NEXT_PUBLIC_TITLE || "not found"
-  );
-  const [subtitle, setSubtitle] = useState<string>(
+  const clientName = useState(process.env.NEXT_PUBLIC_NAME || "not found");
+  const title = useState(process.env.NEXT_PUBLIC_TITLE || "not found");
+  const subtitle = useState<string>(
     process.env.NEXT_PUBLIC_SUBTITLE || "not found"
   );
   const [socialUrls, setSocialUrls] = useState<string>(
     process.env.NEXT_PUBLIC_SOCIALS || "[]"
   );
-  const [actionDestination, setActionDestination] = useState(
-    process.env.NEXT_PUBLIC_ACTION
-  );
-  const [actionStatement, setActionStatement] = useState<string | undefined>(
+  const actionDestination = useState(process.env.NEXT_PUBLIC_ACTION);
+  const actionStatement = useState<string | undefined>(
     process.env.NEXT_PUBLIC_ACTION_STATEMENT || "not found"
   );
-  const [headshotContent, setHeadshotContent] = useState<string>();
-  const [headshotFileName, setHeadshotFileName] = useState(
-    process.env.NEXT_PUBLIC_HEADSHOT || ""
-  );
-  const [headshotSrc, setHeadshotSrc] = useState(
-    `/${process.env.NEXT_PUBLIC_HEADSHOT}`
-  );
-  const [backgroundColor, setBackgroundColor] = useState(
-    process.env.NEXT_PUBLIC_BG_COLOR
-  );
-  const [backgroundImage, setBackgroundImage] = useState(
-    process.env.NEXT_PUBLIC_BG_IMAGE
-  );
-  const [accentColor, setAccentColor] = useState(
-    process.env.NEXT_PUBLIC_ACCENT_COLOR
-  );
-  const [secondaryAccentColor, setSecondaryAccentColor] = useState(
+  const headshotContent = useState<string>();
+  const headshotFileName = useState(process.env.NEXT_PUBLIC_HEADSHOT || "");
+  const headshotSrc = useState(`/${process.env.NEXT_PUBLIC_HEADSHOT}`);
+  const backgroundColor = useState(process.env.NEXT_PUBLIC_BG_COLOR);
+  const backgroundImage = useState(process.env.NEXT_PUBLIC_BG_IMAGE);
+  const accentColor = useState(process.env.NEXT_PUBLIC_ACCENT_COLOR);
+  const secondaryAccentColor = useState(
     process.env.NEXT_PUBLIC_SECONDARY_ACCENT_COLOR
   );
   const [linkNewTab, setLinkNewTab] = useState(
@@ -65,95 +49,46 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
   );
   const [password, setPassword] = useState<string>();
 
-  const nameGetSet: LandingCms["name"] = {
-    useGetter: () => useMemo(() => clientName, [clientName]),
-    setter: (name: string) => {
-      setClientName(name);
-    },
-  };
+  const linkNewTabGetSet: LandingCms["linkNewTab"] = useMemo(() => {
+    return {
+      getter: () => JSON.parse(linkNewTab),
+      setter: (newTab: boolean) => {
+        setLinkNewTab(JSON.stringify(newTab));
+      },
+    };
+  }, [linkNewTab]);
 
-  const linkNewTabGetSet: LandingCms["linkNewTab"] = {
-    useGetter: () => useMemo(() => JSON.parse(linkNewTab), [linkNewTab]),
-    setter: (newTab: boolean) => {
-      setLinkNewTab(JSON.stringify(newTab));
-    },
-  };
+  const socialsGetSet: LandingCms["socialUrls"] = useMemo(() => {
+    return {
+      getter: () => JSON.parse(socialUrls),
+      setter: (socials?: string[]) => {
+        setSocialUrls(JSON.stringify(socials));
+      },
+    };
+  }, [socialUrls]);
 
-  const socialsGetSet: LandingCms["socialUrls"] = {
-    useGetter: () => useMemo(() => JSON.parse(socialUrls), [socialUrls]),
-    setter: (socials?: string[]) => {
-      setSocialUrls(JSON.stringify(socials));
-    },
-  };
-
-  const titleGetSet: LandingCms["title"] = {
-    useGetter: () => useMemo(() => title, [title]),
-    setter: setTitle,
-  };
-
-  const subtitleGetSet: LandingCms["subtitle"] = {
-    useGetter: () => useMemo(() => subtitle, [subtitle]),
-    setter: setSubtitle,
-  };
-
-  const actionDestinationGetSet: LandingCms["actionDestination"] = {
-    useGetter: () => useMemo(() => actionDestination, [actionDestination]),
-    setter: setActionDestination,
-  };
-
-  const actionStatementGetSet: LandingCms["actionStatement"] = {
-    useGetter: () => useMemo(() => actionStatement, [actionStatement]),
-    setter: setActionStatement,
-  };
-
-  const headshotContentGetSet: LandingCms["headshotContent"] = {
-    useGetter: () => useMemo(() => headshotContent, [headshotContent]),
-    setter: setHeadshotContent,
-  };
-
-  const headshotFileNameGetSet: LandingCms["headshotFileName"] = {
-    useGetter: () => useMemo(() => headshotFileName, [headshotFileName]),
-    setter: setHeadshotFileName,
-  };
-
-  const headshotSrcGetSet: LandingCms["headshotSrc"] = {
-    useGetter: () => useMemo(() => headshotSrc, [headshotSrc]),
-    setter: setHeadshotSrc,
-  };
-
-  const backgroundColorGetSet: LandingCms["backgroundColor"] = {
-    useGetter: () => useMemo(() => backgroundColor, [backgroundColor]),
-    setter: setBackgroundColor,
-  };
-
-  const backgroundImageGetSet: LandingCms["backgroundImage"] = {
-    useGetter: () => useMemo(() => backgroundImage, [backgroundImage]),
-    setter: setBackgroundImage,
-  };
-
-  const accentColorGetSet: LandingCms["accentColor"] = {
-    useGetter: () => useMemo(() => accentColor, [accentColor]),
-    setter: setAccentColor,
-  };
-
-  const secondaryAccentColorGetSet: LandingCms["secondaryAccentColor"] = {
-    useGetter: () =>
-      useMemo(() => secondaryAccentColor, [secondaryAccentColor]),
-    setter: setSecondaryAccentColor,
-  };
+  function getSet<T>([state, setState]: [
+    T,
+    Dispatch<SetStateAction<T>>
+  ]): CmsGetSet<T> {
+    return {
+      getter: () => state,
+      setter: setState,
+    };
+  }
 
   const environmentVariables = useLandEnvVars({
-    NEXT_PUBLIC_TITLE: title,
-    NEXT_PUBLIC_NAME: clientName,
-    NEXT_PUBLIC_SUBTITLE: subtitle,
+    NEXT_PUBLIC_TITLE: title[0],
+    NEXT_PUBLIC_NAME: clientName[0],
+    NEXT_PUBLIC_SUBTITLE: subtitle[0],
     NEXT_PUBLIC_SOCIALS: socialUrls,
-    NEXT_PUBLIC_ACTION_STATEMENT: actionStatement,
-    NEXT_PUBLIC_HEADSHOT: headshotFileName,
-    NEXT_PUBLIC_ACTION: actionDestination,
-    NEXT_PUBLIC_BG_COLOR: backgroundColor,
-    NEXT_PUBLIC_BG_IMAGE: backgroundImage,
-    NEXT_PUBLIC_ACCENT_COLOR: accentColor,
-    NEXT_PUBLIC_SECONDARY_ACCENT_COLOR: secondaryAccentColor,
+    NEXT_PUBLIC_ACTION_STATEMENT: actionStatement[0],
+    NEXT_PUBLIC_HEADSHOT: headshotFileName[0],
+    NEXT_PUBLIC_ACTION: actionDestination[0],
+    NEXT_PUBLIC_BG_COLOR: backgroundColor[0],
+    NEXT_PUBLIC_BG_IMAGE: backgroundImage[0],
+    NEXT_PUBLIC_ACCENT_COLOR: accentColor[0],
+    NEXT_PUBLIC_SECONDARY_ACCENT_COLOR: secondaryAccentColor[0],
     NEXT_PUBLIC_HIDE_ADMIN: "false",
     NEXT_PUBLIC_LINK_NEW_TAB: linkNewTab,
     NEXT_AUTH_USERNAME: session.data?.user?.email,
@@ -164,23 +99,38 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     return {
       setPassword,
       landingCms: {
-        name: nameGetSet,
+        name: getSet(clientName),
         socialUrls: socialsGetSet,
-        title: titleGetSet,
-        subtitle: subtitleGetSet,
-        actionDestination: actionDestinationGetSet,
-        actionStatement: actionStatementGetSet,
-        headshotContent: headshotContentGetSet,
-        headshotFileName: headshotFileNameGetSet,
-        headshotSrc: headshotSrcGetSet,
-        backgroundColor: backgroundColorGetSet,
-        backgroundImage: backgroundImageGetSet,
-        accentColor: accentColorGetSet,
-        secondaryAccentColor: secondaryAccentColorGetSet,
+        title: getSet(title),
+        subtitle: getSet(subtitle),
+        actionDestination: getSet(actionDestination),
+        actionStatement: getSet(actionStatement),
+        headshotContent: getSet(headshotContent),
+        headshotFileName: getSet(headshotFileName),
+        headshotSrc: getSet(headshotSrc),
+        backgroundColor: getSet(backgroundColor),
+        backgroundImage: getSet(backgroundImage),
+        accentColor: getSet(accentColor),
+        secondaryAccentColor: getSet(secondaryAccentColor),
         linkNewTab: linkNewTabGetSet,
       },
     };
-  }, [headshotContent, headshotFileName, environmentVariables]);
+  }, [
+    headshotSrc,
+    headshotContent,
+    headshotFileName,
+    clientName,
+    title,
+    subtitle,
+    actionDestination,
+    actionStatement,
+    accentColor,
+    secondaryAccentColor,
+    backgroundColor,
+    backgroundImage,
+    linkNewTabGetSet,
+    socialsGetSet,
+  ]);
 
   return (
     <CmsContext.Provider value={contextValue}>{children}</CmsContext.Provider>
