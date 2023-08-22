@@ -1,9 +1,9 @@
 "use client";
 import { useMemo } from "react";
 
-interface EnvVariable {
+export interface EnvVariable {
   key: string;
-  target: string;
+  target: string[];
   type: string;
   value: string;
 }
@@ -17,7 +17,7 @@ export const useLandEnvVars = (
       .map(([key, value]) => {
         return {
           key,
-          target: "production",
+          target: ["production"],
           type: "encrypted",
           value: value!,
         };

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { NextAuthProvider } from "./nextAuthProvider";
 import { CmsContextProvider } from "./context/cms";
+import { EnvContextProvider } from "./context/env";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <NextAuthProvider>
-          <CmsContextProvider>{children}</CmsContextProvider>
+          <CmsContextProvider>
+            <EnvContextProvider>{children}</EnvContextProvider>
+          </CmsContextProvider>
         </NextAuthProvider>
       </body>
     </html>

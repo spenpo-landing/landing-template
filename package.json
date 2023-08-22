@@ -21,11 +21,13 @@
     "eslint-config-next": "13.4.12",
     "next": "^13.4.19",
     "next-auth": "^4.23.0",
+    "octokit": "^3.1.0",
     "react": "18.2.0",
     "react-color": "^2.19.3",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-social-icons": "^5.15.0",
+    "react-timer-hook": "^3.0.7",
     "typescript": "5.1.6"
   },
   "devDependencies": {

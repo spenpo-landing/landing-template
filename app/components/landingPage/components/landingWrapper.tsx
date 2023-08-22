@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import React, { ReactNode, useContext } from "react";
 import { LandingPageContext } from "../../../context/landingPage";
+import PageWrapper from "../../pageWrapper";
 
 export const LandingWrapper: React.FC<{ children: ReactNode }> = ({
   children,
@@ -9,18 +10,10 @@ export const LandingWrapper: React.FC<{ children: ReactNode }> = ({
     useContext(LandingPageContext);
 
   return (
-    <Box
-      component="main"
+    <PageWrapper
+      backgroundColor={BACKGROUND_COLOR}
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: BACKGROUND_COLOR,
         backgroundImage: `url('${BACKGROUND_IMAGE}')`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
       }}
     >
       {TopComponents}
@@ -34,6 +27,6 @@ export const LandingWrapper: React.FC<{ children: ReactNode }> = ({
       >
         {children}
       </Box>
-    </Box>
+    </PageWrapper>
   );
 };

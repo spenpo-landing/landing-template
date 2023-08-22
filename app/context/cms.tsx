@@ -1,6 +1,7 @@
 "use client";
 import { CmsGetSet, LandingCms } from "../components/landingPage";
-import { useLandEnvVars } from "../hooks/useEnvVariables";
+import { DEFAULT_PROPS } from "../components/landingPage/constants";
+import { EnvVariable, useLandEnvVars } from "../hooks/useEnvVariables";
 import { useSession } from "next-auth/react";
 import React, {
   Dispatch,
@@ -14,6 +15,7 @@ import React, {
 type CmsContextProps = {
   setPassword: Dispatch<SetStateAction<string | undefined>>;
   landingCms: LandingCms;
+  environmentVariables: EnvVariable[];
 };
 
 export const CmsContext = createContext({} as CmsContextProps);
@@ -38,11 +40,18 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
   const headshotContent = useState<string>();
   const headshotFileName = useState(process.env.NEXT_PUBLIC_HEADSHOT || "");
   const headshotSrc = useState(`/${process.env.NEXT_PUBLIC_HEADSHOT}`);
-  const backgroundColor = useState(process.env.NEXT_PUBLIC_BG_COLOR);
-  const backgroundImage = useState(process.env.NEXT_PUBLIC_BG_IMAGE);
-  const accentColor = useState(process.env.NEXT_PUBLIC_ACCENT_COLOR);
-  const secondaryAccentColor = useState(
-    process.env.NEXT_PUBLIC_SECONDARY_ACCENT_COLOR
+  const backgroundColor = useState<string | undefined>(
+    process.env.NEXT_PUBLIC_BG_COLOR || DEFAULT_PROPS.BG_COLOR
+  );
+  const backgroundImage = useState<string | undefined>(
+    process.env.NEXT_PUBLIC_BG_IMAGE || DEFAULT_PROPS.BG_IMAGE
+  );
+  const accentColor = useState<string | undefined>(
+    process.env.NEXT_PUBLIC_ACCENT_COLOR || DEFAULT_PROPS.ACCENT_COLOR
+  );
+  const secondaryAccentColor = useState<string | undefined>(
+    process.env.NEXT_PUBLIC_SECONDARY_ACCENT_COLOR ||
+      DEFAULT_PROPS.SECONDARY_ACCENT_COLOR
   );
   const [linkNewTab, setLinkNewTab] = useState(
     process.env.NEXT_PUBLIC_LINK_NEW_TAB || "false"
@@ -96,6 +105,8 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
   });
 
   const contextValue: CmsContextProps = useMemo(() => {
+    console.log(clientName[0]);
+
     return {
       setPassword,
       landingCms: {
@@ -114,6 +125,7 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
         secondaryAccentColor: getSet(secondaryAccentColor),
         linkNewTab: linkNewTabGetSet,
       },
+      environmentVariables,
     };
   }, [
     headshotSrc,
@@ -130,6 +142,7 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     backgroundImage,
     linkNewTabGetSet,
     socialsGetSet,
+    environmentVariables,
   ]);
 
   return (
