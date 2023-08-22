@@ -26,10 +26,12 @@ const getDeploymentAliases = async (deploymentId: string) =>
   });
 
 const redeployProject = async (deploymentId: string, name: string) =>
-  fetch("https://api.vercel.com/v13/deployments", {
+  fetch("https://api.vercel.com/v13/deployments?forceNew=1", {
     body: JSON.stringify({
       name,
       deploymentId,
+      meta: { action: "redeploy" },
+      target: "production",
     }),
     headers,
     method: "post",

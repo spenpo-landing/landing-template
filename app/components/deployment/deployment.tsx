@@ -92,11 +92,9 @@ export const Deployment: React.FC<{ id: string; createdAt: number }> = ({
           <SmallHeader>Duration</SmallHeader>
           {metadata &&
           ["READY", "CANCELED", "ERROR"].includes(metadata.readyState) ? (
-            <Typography>{`${(
-              (metadata?.ready - metadata?.buildingAt) /
-              1000 /
-              60
-            ).toFixed()}m ${(
+            <Typography>{`${Math.floor(
+              (metadata?.ready - metadata?.buildingAt) / 1000 / 60
+            )}m ${(
               (((metadata?.ready - metadata?.buildingAt) / 1000 / 60) % 1) *
               60
             ).toFixed()}s`}</Typography>
