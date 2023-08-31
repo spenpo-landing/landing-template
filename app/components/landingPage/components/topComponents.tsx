@@ -1,5 +1,5 @@
 import { Stack, Button, Tooltip, Box } from "@mui/material";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";

@@ -105,8 +105,6 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
   });
 
   const contextValue: CmsContextProps = useMemo(() => {
-    console.log(clientName[0]);
-
     return {
       setPassword,
       landingCms: {
