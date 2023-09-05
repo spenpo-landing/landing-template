@@ -1,4 +1,4 @@
-import { Box, Divider } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import React, { useContext } from "react";
 import { LandingPageContext } from "../../../context/landingPage";
 import { ActionBtn } from "./actionBtn";
@@ -10,14 +10,11 @@ export const Info: React.FC = () => {
     useContext(LandingPageContext);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-evenly",
-        textAlign: "center",
-        alignSelf: "stretch",
-      }}
+    <Stack
+      justifyContent="space-evenly"
+      textAlign="center"
+      alignSelf="stretch"
+      rowGap={{ sm: 3, xs: 3 }}
     >
       <EditableText
         getSet={cms?.title}
@@ -61,6 +58,6 @@ export const Info: React.FC = () => {
       />
       <ActionBtn />
       <Socials />
-    </Box>
+    </Stack>
   );
 };
