@@ -14,9 +14,7 @@ export const LandingWrapper: React.FC<{ children: ReactNode }> = ({
       backgroundColor={BACKGROUND_COLOR}
       sx={{
         backgroundImage: `url('${BACKGROUND_IMAGE}')`,
-        pt: editable?.[0]
-          ? { xl: 0, lg: 0, md: 0, sm: 15, xs: 30 }
-          : { xl: 0, lg: 0, md: 0, sm: 10, xs: 10 },
+        pt: editable?.[0] ? { xl: 0, lg: 0, md: 0, sm: 15, xs: 30 } : {},
       }}
     >
       {TopComponents}
