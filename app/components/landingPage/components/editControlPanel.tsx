@@ -69,7 +69,7 @@ const ContentControl: React.FC = () => {
   } = useContext(LandingPageContext);
   return (
     <>
-      {cms && editable?.[0] && (
+      {cms && editable && (
         <Stack
           direction={{ xl: "row", lg: "row", md: "row" }}
           sx={{
@@ -148,6 +148,7 @@ const ContentControl: React.FC = () => {
 export const EditControlPanel: React.FC = () => {
   const [open, setOpen] = useState(false);
   const { editable } = useContext(LandingPageContext);
+
   return (
     <>
       <Box
@@ -175,8 +176,12 @@ export const EditControlPanel: React.FC = () => {
           <ContentControl />
         </Drawer>
       </Box>
-      <VisibilityControl />
-      <EditControl />
+      {editable && (
+        <>
+          <VisibilityControl />
+          <EditControl />
+        </>
+      )}
     </>
   );
 };
