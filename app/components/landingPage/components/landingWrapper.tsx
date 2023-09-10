@@ -6,7 +6,7 @@ import PageWrapper from "../../pageWrapper";
 export const LandingWrapper: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const { BACKGROUND_COLOR, BACKGROUND_IMAGE, TopComponents, editable } =
+  const { BACKGROUND_COLOR, BACKGROUND_IMAGE, TopComponents } =
     useContext(LandingPageContext);
 
   return (
@@ -14,11 +14,6 @@ export const LandingWrapper: React.FC<{ children: ReactNode }> = ({
       backgroundColor={BACKGROUND_COLOR}
       sx={{
         backgroundImage: `url('${BACKGROUND_IMAGE}')`,
-        pt: editable?.[0]
-          ? { xl: 0, lg: 0, md: 0, sm: 15, xs: 30 }
-          : TopComponents
-          ? { xl: 0, lg: 0, md: 0, sm: 10, xs: 10 }
-          : {},
       }}
     >
       {TopComponents}
@@ -29,6 +24,7 @@ export const LandingWrapper: React.FC<{ children: ReactNode }> = ({
         rowGap={3}
         p={4}
         direction={{ md: "row" }}
+        flex={{ md: 0, sm: 1, xs: 1 }}
       >
         {children}
       </Stack>

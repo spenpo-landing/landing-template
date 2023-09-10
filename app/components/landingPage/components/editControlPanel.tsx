@@ -1,5 +1,12 @@
-import { IconButton, Stack, TextField, Tooltip } from "@mui/material";
-import React, { useContext } from "react";
+import {
+  Box,
+  Drawer,
+  IconButton,
+  Stack,
+  TextField,
+  Tooltip,
+} from "@mui/material";
+import React, { useContext, useState } from "react";
 import { ColorPicker } from "../../../components/colorPicker";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -9,8 +16,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import { LandingPageContext } from "../../../context/landingPage";
+import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 
-export const EditControlPanel: React.FC = () => {
+const ControlPanel: React.FC = () => {
   const {
     cms,
     editable,
@@ -28,12 +36,20 @@ export const EditControlPanel: React.FC = () => {
           <Stack
             direction={{ xl: "row", lg: "row", md: "row" }}
             sx={{
-              position: "absolute",
+              position: {
+                xl: "absolute",
+                lg: "absolute",
+                md: "absolute",
+                sm: "absolute",
+                xs: "block",
+              },
               display: editable[0] ? "flex" : "none",
             }}
             mt={1}
             ml={1}
+            mb={{ xs: 1 }}
             rowGap={2}
+            alignItems={{ md: "center", sm: "flex-start" }}
           >
             <Stack
               direction={{ xl: "row", lg: "row", md: "row", sm: "row" }}
@@ -95,7 +111,7 @@ export const EditControlPanel: React.FC = () => {
           </Stack>
           <Tooltip title={`${hideButtons ? "show" : "hide"} extra buttons`}>
             <IconButton
-              sx={{ position: "absolute", right: 40 }}
+              sx={{ position: "absolute", right: 0 }}
               onClick={() => setHideButtons(!hideButtons)}
             >
               {hideButtons ? <VisibilityOffIcon /> : <VisibilityIcon />}
@@ -103,7 +119,17 @@ export const EditControlPanel: React.FC = () => {
           </Tooltip>
           <Tooltip title={editable[0] ? "preview" : "edit"}>
             <IconButton
-              sx={{ position: "absolute", right: 80 }}
+              sx={{
+                position: {
+                  xl: "absolute",
+                  lg: "absolute",
+                  md: "absolute",
+                  sm: "absolute",
+                  xs: editable[0] ? "absolute" : "block",
+                },
+                right: 40,
+                ml: { xs: "auto" },
+              }}
               onClick={() => editable[1](!editable[0])}
             >
               {editable[0] ? <EditIcon /> : <EditOffIcon />}
@@ -111,6 +137,33 @@ export const EditControlPanel: React.FC = () => {
           </Tooltip>
         </>
       )}
+    </>
+  );
+};
+
+export const EditControlPanel: React.FC = () => {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Box
+        display={{
+          xl: "block",
+          lg: "block",
+          md: "block",
+          sm: "block",
+          xs: "none",
+        }}
+      >
+        <ControlPanel />
+      </Box>
+      <Box display={{ xl: "none", lg: "none", md: "none", sm: "none" }}>
+        <IconButton onClick={() => setOpen(true)} sx={{ position: "absolute" }}>
+          <KeyboardDoubleArrowDownIcon />
+        </IconButton>
+        <Drawer anchor="top" open={open} onClose={() => setOpen(false)}>
+          <ControlPanel />
+        </Drawer>
+      </Box>
     </>
   );
 };

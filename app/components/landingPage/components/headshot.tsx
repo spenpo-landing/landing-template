@@ -9,8 +9,8 @@ export const Headshot: React.FC = () => {
     useContext(LandingPageContext);
 
   const BOX_PROPS = {
-    height: 480,
-    width: 480,
+    height: { md: 480, sm: "unset", xs: "unset" },
+    width: { md: 480, sm: "100%", xs: "100%" },
     borderRadius: 1,
     sx: {
       backgroundImage: `url(${HEADSHOT_SRC})`,
@@ -18,6 +18,7 @@ export const Headshot: React.FC = () => {
       backgroundSize: "cover",
       backgroundRepeat: "no-repeat",
     },
+    flex: { sm: 1, xs: 1 },
   };
 
   const { getRootProps, getInputProps } = useDropzone({
