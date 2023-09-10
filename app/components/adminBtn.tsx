@@ -25,8 +25,9 @@ const config = {
 
 const AdminBtn: React.FC = () => {
   const session = useSession();
+  const hideAdmin = JSON.parse(process.env.NEXT_PUBLIC_HIDE_ADMIN || "");
   return (
-    !JSON.parse(process.env.NEXT_PUBLIC_HIDE_ADMIN || "") && (
+    !hideAdmin && (
       <IconButton
         href={config[session.status].href}
         sx={{

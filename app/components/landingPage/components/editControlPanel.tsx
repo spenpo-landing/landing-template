@@ -18,6 +18,9 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 
+const hideAdmin = JSON.parse(process.env.NEXT_PUBLIC_HIDE_ADMIN || "");
+const extraSpace = hideAdmin ? 0 : 40;
+
 const VisibilityControl: React.FC = () => {
   const {
     hideButtons: [hideButtons, setHideButtons],
@@ -26,7 +29,7 @@ const VisibilityControl: React.FC = () => {
   return (
     <Tooltip title={`${hideButtons ? "show" : "hide"} extra buttons`}>
       <IconButton
-        sx={{ position: "absolute", right: 0 }}
+        sx={{ position: "absolute", right: 0 + extraSpace }}
         onClick={() => setHideButtons(!hideButtons)}
       >
         {hideButtons ? <VisibilityOffIcon /> : <VisibilityIcon />}
@@ -43,7 +46,7 @@ const EditControl: React.FC = () => {
       <IconButton
         sx={{
           position: "absolute",
-          right: 40,
+          right: 40 + extraSpace,
           ml: { xs: "auto" },
         }}
         onClick={() => editable?.[1](!editable[0])}
@@ -66,7 +69,7 @@ const ContentControl: React.FC = () => {
   } = useContext(LandingPageContext);
   return (
     <>
-      {cms && editable && (
+      {cms && editable?.[0] && (
         <Stack
           direction={{ xl: "row", lg: "row", md: "row" }}
           sx={{
