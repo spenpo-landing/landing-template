@@ -24,7 +24,6 @@ export type LandingCms = {
   actionStatement: CmsGetSet<string | undefined>;
   headshotSrc: CmsGetSet;
   headshotContent: CmsGetSet<string | undefined>;
-  headshotFileName: CmsGetSet;
   linkNewTab: CmsGetSet<boolean>;
 };
 

@@ -38,12 +38,7 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     process.env.NEXT_PUBLIC_ACTION_STATEMENT || "not found"
   );
   const headshotContent = useState<string>();
-  const headshotFileName = useState(process.env.NEXT_PUBLIC_HEADSHOT || "");
-  const headshotSrc = useState(
-    `${!process.env.NEXT_PUBLIC_HEADSHOT?.startsWith("https://") && "/"}${
-      process.env.NEXT_PUBLIC_HEADSHOT
-    }`
-  );
+  const headshotSrc = useState(process.env.NEXT_PUBLIC_HEADSHOT || "");
   const backgroundColor = useState<string | undefined>(
     process.env.NEXT_PUBLIC_BG_COLOR || DEFAULT_PROPS.BG_COLOR
   );
@@ -96,7 +91,7 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     NEXT_PUBLIC_SUBTITLE: subtitle[0],
     NEXT_PUBLIC_SOCIALS: socialUrls,
     NEXT_PUBLIC_ACTION_STATEMENT: actionStatement[0],
-    NEXT_PUBLIC_HEADSHOT: headshotFileName[0],
+    NEXT_PUBLIC_HEADSHOT: headshotSrc[0],
     NEXT_PUBLIC_ACTION: actionDestination[0],
     NEXT_PUBLIC_BG_COLOR: backgroundColor[0],
     NEXT_PUBLIC_BG_IMAGE: backgroundImage[0],
@@ -119,7 +114,6 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
         actionDestination: getSet(actionDestination),
         actionStatement: getSet(actionStatement),
         headshotContent: getSet(headshotContent),
-        headshotFileName: getSet(headshotFileName),
         headshotSrc: getSet(headshotSrc),
         backgroundColor: getSet(backgroundColor),
         backgroundImage: getSet(backgroundImage),
@@ -132,7 +126,6 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
   }, [
     headshotSrc,
     headshotContent,
-    headshotFileName,
     clientName,
     title,
     subtitle,
