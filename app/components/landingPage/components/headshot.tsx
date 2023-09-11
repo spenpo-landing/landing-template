@@ -19,6 +19,7 @@ export const Headshot: React.FC = () => {
       backgroundRepeat: "no-repeat",
     },
     flex: { sm: 1, xs: 1 },
+    minHeight: 200,
   };
 
   const { getRootProps, getInputProps } = useDropzone({
