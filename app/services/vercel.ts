@@ -33,7 +33,7 @@ const getDeploymentAliases = async (deploymentId: string) =>
 
 const redeployProject = async (deploymentId: string, name: string) =>
   fetch(
-    `https://api.vercel.com/v13/deployments?forceNew=1?teamId=${process.env.NEXT_PUBLIC_VERCEL_TEAM}`,
+    `https://api.vercel.com/v13/deployments?forceNew=1&teamId=${process.env.NEXT_PUBLIC_VERCEL_TEAM}`,
     {
       body: JSON.stringify({
         name,
