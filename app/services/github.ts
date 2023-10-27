@@ -1,8 +1,8 @@
-import { Octokit } from "octokit"
+import { Octokit } from "octokit";
 
 const octokit = new Octokit({
-  auth: process.env.NEXT_PUBLIC_GH_TOKEN,
-})
+  auth: process.env.GH_TOKEN,
+});
 
 const cloneRepo = async (projectName: string, clientName: string) =>
   octokit.request("POST /repos/{template_owner}/{template_repo}/generate", {
@@ -16,7 +16,7 @@ const cloneRepo = async (projectName: string, clientName: string) =>
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
     },
-  })
+  });
 
 const createBlob = async (projectName: string, headshot: string) =>
   octokit.request("POST /repos/{owner}/{repo}/git/blobs", {
@@ -27,7 +27,7 @@ const createBlob = async (projectName: string, headshot: string) =>
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
     },
-  })
+  });
 
 const getMainTree = async (projectName: string) =>
   octokit.request("GET /repos/{owner}/{repo}/branches/{branch_name}", {
@@ -37,7 +37,7 @@ const getMainTree = async (projectName: string) =>
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
     },
-  })
+  });
 
 const createTree = async (
   projectName: string,
@@ -60,7 +60,7 @@ const createTree = async (
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
     },
-  })
+  });
 
 const createCommit = async (
   projectName: string,
@@ -80,7 +80,7 @@ const createCommit = async (
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
     },
-  })
+  });
 
 const pushCommit = async (projectName: string, commitSha: string) =>
   octokit.request("PATCH /repos/{owner}/{repo}/git/refs/{ref}", {
@@ -92,6 +92,13 @@ const pushCommit = async (projectName: string, commitSha: string) =>
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
     },
-  })
+  });
 
-export { cloneRepo, createBlob, getMainTree, createTree, createCommit, pushCommit }
+export {
+  cloneRepo,
+  createBlob,
+  getMainTree,
+  createTree,
+  createCommit,
+  pushCommit,
+};

@@ -13,6 +13,7 @@ import React, {
 } from "react";
 
 type CmsContextProps = {
+  file: [File | undefined, Dispatch<SetStateAction<File | undefined>>];
   setPassword: Dispatch<SetStateAction<string | undefined>>;
   landingCms: LandingCms;
   environmentVariables: EnvVariable[];
@@ -56,6 +57,8 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     process.env.NEXT_PUBLIC_LINK_NEW_TAB || "false"
   );
   const [password, setPassword] = useState<string>();
+
+  const file = useState<File>();
 
   const linkNewTabGetSet: LandingCms["linkNewTab"] = useMemo(() => {
     return {
@@ -105,6 +108,7 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
 
   const contextValue: CmsContextProps = useMemo(() => {
     return {
+      file,
       setPassword,
       landingCms: {
         name: getSet(clientName),
@@ -124,6 +128,7 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
       environmentVariables,
     };
   }, [
+    file,
     headshotSrc,
     headshotContent,
     clientName,

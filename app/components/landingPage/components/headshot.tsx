@@ -3,10 +3,14 @@ import React, { useContext } from "react";
 import { LandingPageContext } from "../../../context/landingPage";
 import { useDropzone } from "react-dropzone";
 import UploadIcon from "@mui/icons-material/Upload";
+import { CmsContext } from "@/app/context/cms";
 
 export const Headshot: React.FC = () => {
   const { HEADSHOT_SRC, SECONDARY_ACCENT_COLOR, cms, editable } =
     useContext(LandingPageContext);
+  const {
+    file: [, setFile],
+  } = useContext(CmsContext);
 
   const BOX_PROPS = {
     height: { md: 480, xs: "unset" },
@@ -32,7 +36,7 @@ export const Headshot: React.FC = () => {
         /* eslint-disable no-console */ console.log("file reading has failed");
       reader.readAsArrayBuffer(acceptedFiles[0]);
       reader.onload = async () => {
-        // setFile(acceptedFiles[0])
+        setFile(acceptedFiles[0]);
         cms?.headshotSrc.setter(URL.createObjectURL(acceptedFiles[0]));
       };
     },

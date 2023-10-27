@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getDeployment, getDeploymentEvents } from "../../services/vercel";
 
 type DeploymentEvent = {
   type?: string;
@@ -40,6 +39,12 @@ type UseDeploymentProps = {
   metadata?: Deployment;
 };
 
+const getDeployment = async (uid: string) =>
+  fetch(`/api/getVercelDeployment?uid=${uid}`);
+
+const getDeploymentEvents = async (uid: string) =>
+  fetch(`/api/getVercelDeploymentEvents?uid=${uid}`);
+
 export const useDeployment = (id: string): UseDeploymentProps => {
   const [deploymentEvents, setDeploymentEvents] = useState<DeploymentEvent[]>(
     []
@@ -52,15 +57,14 @@ export const useDeployment = (id: string): UseDeploymentProps => {
       !["READY", "CANCELED", "ERROR"].includes(metadata?.readyState || "") &&
       !error
     ) {
-      const pollingId = window.setInterval(
-        () =>
-          getDeployment(id).then(async (res) => {
-            const data = await res.json();
-            if (data.error) setError(data.error);
-            else setMetadata(data);
-          }),
-        3000
-      );
+      const poll = async () =>
+        getDeployment(id).then(async (res) => {
+          const data = await res.json();
+          if (data.error) setError(data.error);
+          else setMetadata(data);
+        });
+      poll();
+      const pollingId = window.setInterval(poll, 3000);
 
       return () => {
         clearInterval(pollingId);
@@ -120,7 +124,7 @@ export const useDeployment = (id: string): UseDeploymentProps => {
       }
     };
 
-    fetchData();
+    if (id) fetchData();
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, []);
 

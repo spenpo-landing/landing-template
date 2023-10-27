@@ -1,3 +1,4 @@
+"use client";
 import React, { ReactNode, useEffect, useMemo } from "react";
 import { CircularProgress, Stack, SxProps, Typography } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
@@ -75,8 +76,8 @@ export const Deployment: React.FC<{ id: string; createdAt: number }> = ({
   }, [offsetTimestamp]);
 
   return (
-    <Stack m={5} rowGap={3}>
-      <Stack columnGap={3} direction="row">
+    <Stack p={{ xs: 2, md: 5 }} rowGap={3} flex={1} width="100%">
+      <Stack gap={3} direction={{ xs: "column", md: "row" }}>
         <Stack sx={METADATA_SX}>
           <SmallHeader>Status</SmallHeader>
           <Typography component="span">
@@ -120,7 +121,15 @@ export const Deployment: React.FC<{ id: string; createdAt: number }> = ({
           ))}
         </Stack>
       </Stack>
-      <Stack bgcolor="#000" color="#fff" borderRadius={1} px={2} pt={4} pb={1}>
+      <Stack
+        bgcolor="#000"
+        color="#fff"
+        borderRadius={1}
+        px={2}
+        pt={4}
+        pb={1}
+        flex={1}
+      >
         {metadata?.ready && (
           <Typography
             mb={1}
