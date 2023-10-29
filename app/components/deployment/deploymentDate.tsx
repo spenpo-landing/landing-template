@@ -1,8 +1,8 @@
-import React from "react"
-import { Typography } from "@mui/material"
+import React from "react";
+import { Typography } from "@mui/material";
 
 export const DeploymentDate: React.FC<{ date: number }> = ({ date }) => (
-  <Typography component="span">
+  <Typography component="span" fontFamily="var(--font-mono)">
     {new Date(date).getHours().toString().padStart(2, "0")}:
     {new Date(date).getMinutes().toString().padStart(2, "0")}:
     {new Date(date).getSeconds().toString().padStart(2, "0")}.
@@ -12,4 +12,4 @@ export const DeploymentDate: React.FC<{ date: number }> = ({ date }) => (
       )[1]
     }
   </Typography>
-)
+);
