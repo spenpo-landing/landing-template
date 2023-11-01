@@ -174,10 +174,8 @@ export const Deployment: React.FC<{ id: string; createdAt: number }> = ({
             metadata.readyState
           }`}</Typography>
         )}
-        {deploymentEvents?.map((event) => {
-          console.log(event);
-
-          return (
+        {deploymentEvents?.map(
+          (event) =>
             event.created && (
               <Stack direction="row" columnGap={5} key={event.payload.id}>
                 <DeploymentDate date={event.created} />
@@ -190,8 +188,7 @@ export const Deployment: React.FC<{ id: string; createdAt: number }> = ({
                 </Typography>
               </Stack>
             )
-          );
-        })}
+        )}
         {metadata?.readyState === "READY" && metadata?.alias[0] && (
           <Typography
             fontFamily="var(--font-mono)"
