@@ -6,5 +6,18 @@ export async function GET(req: NextRequest) {
 
   const deploymentEvents = await getDeploymentEvents(String(uid));
 
-  return new Response(deploymentEvents.body);
+  const stream = new ReadableStream({
+    async start(controller) {
+      for await (const chunk of deploymentEvents.body as any) {
+        try {
+          controller.enqueue(chunk);
+        } catch (e) {
+          controller.error(e);
+        }
+      }
+      controller.close();
+    },
+  });
+
+  return new Response(stream);
 }

@@ -54,39 +54,26 @@ export const useDeployment = (id: string): UseDeploymentProps => {
   }, [metadata, id, error]);
 
   useEffect(() => {
-    // fetch deployment events
-    const fetchData = async () => {
-      try {
-        const response = await getDeploymentEvents(id);
-        if (!response.ok || !response.body) {
-          throw response.statusText;
-        }
-
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-
-        while (true) {
-          const { value, done } = await reader.read();
-
-          if (
-            done ||
-            ["READY", "CANCELED", "ERROR"].includes(metadata?.readyState || "")
-          ) {
-            break;
-          }
-
-          const decodedChunk = decoder.decode(value, { stream: true });
-
-          setDeploymentEvents((prev) => prev + decodedChunk);
-        }
-      } catch (error) {
-        console.log(error);
+    getDeploymentEvents(id).then(async (response) => {
+      if (!response.body) {
+        return;
       }
-    };
 
-    if (id) fetchData();
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, []);
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
+
+      while (
+        !done &&
+        !["READY", "CANCELED", "ERROR"].includes(metadata?.readyState || "")
+      ) {
+        const { value, done: readerDone } = await reader.read();
+        const decodedChunk = decoder.decode(value, { stream: true });
+        done = readerDone;
+        setDeploymentEvents((prev) => prev + decodedChunk);
+      }
+    });
+  }, [id, metadata?.readyState]);
 
   return { deploymentEvents, metadata };
 };

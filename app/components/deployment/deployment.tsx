@@ -74,8 +74,6 @@ export const Deployment: React.FC<{ id: string; createdAt: number }> = ({
   const deploymentEvents = useMemo(
     () =>
       deploymentEventsStr.split(`}}\n`).reduce((p: DeploymentEvent[], c) => {
-        // console.log(`\n${c}\n`);
-
         let str;
 
         try {
