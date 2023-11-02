@@ -266,10 +266,13 @@ const Home: NextPage = () => {
                 body: file,
               });
             }
-            const redeploy = await redeployReq.json();
-            router.push(
-              `/deployments/${redeploy.redeployRes.id}?createdAt=${redeploy.redeployRes.createdAt}`
-            );
+            await redeployReq
+              .json()
+              .then((res) =>
+                router.push(
+                  `/deployments/${res.redeployRes.id}?createdAt=${res.redeployRes.createdAt}`
+                )
+              );
           }}
           sx={{ m: "auto" }}
         >
