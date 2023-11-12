@@ -39,7 +39,9 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     process.env.NEXT_PUBLIC_ACTION_STATEMENT || "not found"
   );
   const headshotContent = useState<string>();
-  const headshotSrc = useState(process.env.NEXT_PUBLIC_HEADSHOT || "");
+  const headshotSrc = useState(
+    process.env.NEXT_PUBLIC_HEADSHOT || DEFAULT_PROPS.HEADSHOT
+  );
   const backgroundColor = useState<string | undefined>(
     process.env.NEXT_PUBLIC_BG_COLOR || DEFAULT_PROPS.BG_COLOR
   );
