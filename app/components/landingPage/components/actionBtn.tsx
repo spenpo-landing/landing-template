@@ -52,6 +52,7 @@ const Btn: React.FC = forwardRef<HTMLAnchorElement | null>(
           mx: "auto",
           py: 2,
           backgroundColor: ACCENT_COLOR,
+          textTransform: "capitalize",
           ":hover": {
             transform: "scale(1.03)",
             backgroundColor: SECONDARY_ACCENT_COLOR,
