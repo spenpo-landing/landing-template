@@ -1,8 +1,7 @@
-"use client";
-import { CmsGetSet, LandingCms } from "../components/landingPage";
-import { DEFAULT_PROPS } from "../components/landingPage/constants";
-import { EnvVariable, useLandEnvVars } from "../hooks/useEnvVariables";
-import { useSession } from "next-auth/react";
+'use client'
+import { DEFAULT_PROPS } from '../constants'
+import { EnvVariable, useLandEnvVars } from '../hooks/useEnvVariables'
+import { useSession } from 'next-auth/react'
 import React, {
   Dispatch,
   ReactNode,
@@ -10,84 +9,87 @@ import React, {
   createContext,
   useMemo,
   useState,
-} from "react";
+} from 'react'
+import type { SpenpoLandingCms, SpenpoLandingCmsGetSet } from 'spenpo-landing'
 
 type CmsContextProps = {
-  file: [File | undefined, Dispatch<SetStateAction<File | undefined>>];
-  setPassword: Dispatch<SetStateAction<string | undefined>>;
-  landingCms: LandingCms;
-  environmentVariables: EnvVariable[];
-};
+  setPassword: Dispatch<SetStateAction<string | undefined>>
+  landingCms: SpenpoLandingCms
+  environmentVariables: EnvVariable[]
+}
 
-export const CmsContext = createContext({} as CmsContextProps);
+export const CmsContext = createContext({} as CmsContextProps)
 
 export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const session = useSession();
+  const session = useSession()
 
-  const clientName = useState(process.env.NEXT_PUBLIC_NAME || "not found");
-  const title = useState(process.env.NEXT_PUBLIC_TITLE || "not found");
-  const subtitle = useState<string>(
-    process.env.NEXT_PUBLIC_SUBTITLE || "not found"
-  );
+  const clientName = useState<string | undefined>(
+    process.env.NEXT_PUBLIC_NAME || 'not found'
+  )
+  const title = useState<string | undefined>(
+    process.env.NEXT_PUBLIC_TITLE || 'not found'
+  )
+  const subtitle = useState<string | undefined>(
+    process.env.NEXT_PUBLIC_SUBTITLE || 'not found'
+  )
   const [socialUrls, setSocialUrls] = useState<string>(
-    process.env.NEXT_PUBLIC_SOCIALS || "[]"
-  );
-  const actionDestination = useState(process.env.NEXT_PUBLIC_ACTION);
+    process.env.NEXT_PUBLIC_SOCIALS || '[]'
+  )
+  const actionDestination = useState(process.env.NEXT_PUBLIC_ACTION)
   const actionStatement = useState<string | undefined>(
-    process.env.NEXT_PUBLIC_ACTION_STATEMENT || "not found"
-  );
-  const headshotContent = useState<string>();
-  const headshotSrc = useState(
+    process.env.NEXT_PUBLIC_ACTION_STATEMENT || 'not found'
+  )
+  const headshotSrc = useState<string | undefined>(
     process.env.NEXT_PUBLIC_HEADSHOT || DEFAULT_PROPS.HEADSHOT
-  );
+  )
   const backgroundColor = useState<string | undefined>(
     process.env.NEXT_PUBLIC_BG_COLOR || DEFAULT_PROPS.BG_COLOR
-  );
+  )
   const backgroundImage = useState<string | undefined>(
     process.env.NEXT_PUBLIC_BG_IMAGE || DEFAULT_PROPS.BG_IMAGE
-  );
+  )
   const accentColor = useState<string | undefined>(
     process.env.NEXT_PUBLIC_ACCENT_COLOR || DEFAULT_PROPS.ACCENT_COLOR
-  );
+  )
   const secondaryAccentColor = useState<string | undefined>(
     process.env.NEXT_PUBLIC_SECONDARY_ACCENT_COLOR ||
       DEFAULT_PROPS.SECONDARY_ACCENT_COLOR
-  );
+  )
   const [linkNewTab, setLinkNewTab] = useState(
-    process.env.NEXT_PUBLIC_LINK_NEW_TAB || "false"
-  );
-  const [password, setPassword] = useState<string>();
+    process.env.NEXT_PUBLIC_LINK_NEW_TAB || 'false'
+  )
+  const [password, setPassword] = useState<string>()
 
-  const file = useState<File>();
+  const file = useState<File>()
 
-  const linkNewTabGetSet: LandingCms["linkNewTab"] = useMemo(() => {
+  const linkNewTabGetSet: SpenpoLandingCms['linkNewTab'] = useMemo(() => {
     return {
       getter: () => JSON.parse(linkNewTab),
       setter: (newTab: boolean) => {
-        setLinkNewTab(JSON.stringify(newTab));
+        setLinkNewTab(JSON.stringify(newTab))
       },
-    };
-  }, [linkNewTab]);
+    }
+  }, [linkNewTab])
 
-  const socialsGetSet: LandingCms["socialUrls"] = useMemo(() => {
+  const socialsGetSet: SpenpoLandingCms['socialUrls'] = useMemo(() => {
     return {
       getter: () => JSON.parse(socialUrls),
       setter: (socials?: string[]) => {
-        setSocialUrls(JSON.stringify(socials));
+        setSocialUrls(JSON.stringify(socials))
       },
-    };
-  }, [socialUrls]);
+    }
+  }, [socialUrls])
 
   function getSet<T>([state, setState]: [
     T,
     Dispatch<SetStateAction<T>>
-  ]): CmsGetSet<T> {
+  ]): SpenpoLandingCmsGetSet<T> {
     return {
       getter: () => state,
       setter: setState,
-    };
+    }
   }
 
   const environmentVariables = useLandEnvVars({
@@ -102,37 +104,35 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     NEXT_PUBLIC_BG_IMAGE: backgroundImage[0],
     NEXT_PUBLIC_ACCENT_COLOR: accentColor[0],
     NEXT_PUBLIC_SECONDARY_ACCENT_COLOR: secondaryAccentColor[0],
-    NEXT_PUBLIC_HIDE_ADMIN: "false",
+    NEXT_PUBLIC_HIDE_ADMIN: 'false',
     NEXT_PUBLIC_LINK_NEW_TAB: linkNewTab,
     NEXT_AUTH_USERNAME: session.data?.user?.email,
     NEXT_AUTH_PASSWORD: password,
-  });
+  })
 
   const contextValue: CmsContextProps = useMemo(() => {
+    const landingCms: SpenpoLandingCms = {
+      name: getSet(clientName),
+      socialUrls: socialsGetSet,
+      title: getSet(title),
+      subtitle: getSet(subtitle),
+      actionDestination: getSet(actionDestination),
+      actionStatement: getSet(actionStatement),
+      headshotSrc: getSet(headshotSrc),
+      headshotFile: getSet(file),
+      backgroundColor: getSet(backgroundColor),
+      backgroundImage: getSet(backgroundImage),
+      accentColor: getSet(accentColor),
+      secondaryAccentColor: getSet(secondaryAccentColor),
+      linkNewTab: linkNewTabGetSet,
+    }
     return {
-      file,
       setPassword,
-      landingCms: {
-        name: getSet(clientName),
-        socialUrls: socialsGetSet,
-        title: getSet(title),
-        subtitle: getSet(subtitle),
-        actionDestination: getSet(actionDestination),
-        actionStatement: getSet(actionStatement),
-        headshotContent: getSet(headshotContent),
-        headshotSrc: getSet(headshotSrc),
-        backgroundColor: getSet(backgroundColor),
-        backgroundImage: getSet(backgroundImage),
-        accentColor: getSet(accentColor),
-        secondaryAccentColor: getSet(secondaryAccentColor),
-        linkNewTab: linkNewTabGetSet,
-      },
+      landingCms,
       environmentVariables,
-    };
+    }
   }, [
-    file,
     headshotSrc,
-    headshotContent,
     clientName,
     title,
     subtitle,
@@ -145,9 +145,8 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     linkNewTabGetSet,
     socialsGetSet,
     environmentVariables,
-  ]);
+    file,
+  ])
 
-  return (
-    <CmsContext.Provider value={contextValue}>{children}</CmsContext.Provider>
-  );
-};
+  return <CmsContext.Provider value={contextValue}>{children}</CmsContext.Provider>
+}
