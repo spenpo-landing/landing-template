@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { IconButton } from '@mui/material'
 import { useSession } from 'next-auth/react'

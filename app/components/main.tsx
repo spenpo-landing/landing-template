@@ -3,8 +3,15 @@ import { useSession } from 'next-auth/react'
 import React, { useContext, useState } from 'react'
 import { CmsContext } from '../context/cms'
 import AdminBtn from './adminBtn'
-import { SpenpoLanding } from 'spenpo-landing'
 import { TopComponents } from './topComponents'
+import dynamic from 'next/dynamic'
+
+const SpenpoLanding = dynamic(
+  () => import('spenpo-landing').then((res) => res.SpenpoLanding),
+  {
+    ssr: false,
+  }
+)
 
 export const LandingPage: React.FC = () => {
   const editable = useState(false)
@@ -16,7 +23,7 @@ export const LandingPage: React.FC = () => {
       <SpenpoLanding
         cms={landingCms}
         editable={session.status === 'authenticated' ? editable : undefined}
-        topComponents={<TopComponents />}
+        topComponents={<TopComponents editable={editable[0]} />}
       />
     </>
   )
