@@ -22,7 +22,7 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-timer-hook": "^3.0.7",
-    "spenpo-landing": "^2.0.3"
+    "spenpo-landing": "^2.0.6"
   },
   "devDependencies": {
     "@types/node": "20.4.5",

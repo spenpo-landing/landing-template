@@ -55,7 +55,6 @@ export const LandingPageContextProvider: React.FC<{
     name,
     subtitle,
     socialUrls,
-    linkNewTab,
     topComponents,
     editable,
     cms,
@@ -82,7 +81,6 @@ export const LandingPageContextProvider: React.FC<{
   const NAME = cms ? cms.name.getter() : name
   const SUBTITLE = cms ? cms.subtitle.getter() : subtitle
   const SOCIAL_URLS = cms ? cms.socialUrls.getter() : socialUrls
-  const LINK_NEW_TAB = cms ? cms.linkNewTab.getter() : linkNewTab
 
   const TopComponents = useMemo(() => {
     if (!hideButtons[0]) return topComponents
@@ -109,7 +107,6 @@ export const LandingPageContextProvider: React.FC<{
       NAME,
       SUBTITLE,
       SOCIAL_URLS,
-      LINK_NEW_TAB,
       TopComponents,
       cms,
       editable,
@@ -134,7 +131,6 @@ export const LandingPageContextProvider: React.FC<{
     NAME,
     SUBTITLE,
     SOCIAL_URLS,
-    LINK_NEW_TAB,
     TopComponents,
     cms,
     editable,

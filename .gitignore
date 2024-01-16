@@ -36,3 +36,4 @@ next-env.d.ts
 
 .env
 public/default/headshot.jpeg
+.vscode

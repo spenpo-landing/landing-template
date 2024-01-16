@@ -58,10 +58,6 @@ export const EnvContextProvider: React.FC<{ children: ReactNode }> = ({
         value: process.env.NEXT_PUBLIC_HIDE_ADMIN,
         label: 'Hide Admin Button',
       },
-      NEXT_PUBLIC_LINK_NEW_TAB: {
-        value: process.env.NEXT_PUBLIC_LINK_NEW_TAB,
-        label: 'Action Button Links to New Tab',
-      },
     }
   }, [])
 

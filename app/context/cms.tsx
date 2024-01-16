@@ -57,21 +57,9 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     process.env.NEXT_PUBLIC_SECONDARY_ACCENT_COLOR ||
       DEFAULT_PROPS.SECONDARY_ACCENT_COLOR
   )
-  const [linkNewTab, setLinkNewTab] = useState(
-    process.env.NEXT_PUBLIC_LINK_NEW_TAB || 'false'
-  )
   const [password, setPassword] = useState<string>()
 
   const file = useState<File>()
-
-  const linkNewTabGetSet: SpenpoLandingCms['linkNewTab'] = useMemo(() => {
-    return {
-      getter: () => JSON.parse(linkNewTab),
-      setter: (newTab: boolean) => {
-        setLinkNewTab(JSON.stringify(newTab))
-      },
-    }
-  }, [linkNewTab])
 
   const socialsGetSet: SpenpoLandingCms['socialUrls'] = useMemo(() => {
     return {
@@ -105,7 +93,6 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     NEXT_PUBLIC_ACCENT_COLOR: accentColor[0],
     NEXT_PUBLIC_SECONDARY_ACCENT_COLOR: secondaryAccentColor[0],
     NEXT_PUBLIC_HIDE_ADMIN: 'false',
-    NEXT_PUBLIC_LINK_NEW_TAB: linkNewTab,
     NEXT_AUTH_USERNAME: session.data?.user?.email,
     NEXT_AUTH_PASSWORD: password,
   })
@@ -124,7 +111,6 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
       backgroundImage: getSet(backgroundImage),
       accentColor: getSet(accentColor),
       secondaryAccentColor: getSet(secondaryAccentColor),
-      linkNewTab: linkNewTabGetSet,
     }
     return {
       setPassword,
@@ -142,7 +128,6 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     secondaryAccentColor,
     backgroundColor,
     backgroundImage,
-    linkNewTabGetSet,
     socialsGetSet,
     environmentVariables,
     file,
