@@ -19,6 +19,7 @@ import { DEFAULT_PROPS } from '../constants'
 import { useRouter } from 'next/navigation'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import React from 'react'
+import Package from '../../package.json'
 
 const ColorExample: React.FC<{ color: string; opacity?: number }> = ({
   color,
@@ -280,6 +281,9 @@ const Home: NextPage = () => {
           cancel
         </Button>
       </Stack>
+      <Typography variant="caption" sx={{ mt: 'auto' }}>
+        version {Package.version}
+      </Typography>
     </PageWrapper>
   )
 }

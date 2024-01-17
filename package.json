@@ -1,6 +1,6 @@
 {
   "name": "landing-template",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,10 +11,10 @@
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.4",
-    "@mui/material": "^5.15.4",
+    "@mui/icons-material": "^5.15.5",
+    "@mui/material": "^5.15.5",
     "argon2": "^0.31.2",
-    "aws-sdk": "^2.1536.0",
+    "aws-sdk": "^2.1538.0",
     "next": "^13.5.6",
     "next-auth": "^4.24.5",
     "octokit": "^3.1.2",
@@ -22,7 +22,7 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-timer-hook": "^3.0.7",
-    "spenpo-landing": "^2.0.6"
+    "spenpo-landing": "^2.0.10"
   },
   "devDependencies": {
     "@types/node": "20.4.5",

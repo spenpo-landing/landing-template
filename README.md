@@ -1,34 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+#A full stack implementation of the [spenpo-landing](https://www.npmjs.com/package/spenpo-landing) npm module built with Next.js
 
-## Getting Started
+##env variables:
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+| Variable                           | Description                                                                                                                                                                                                                     | Reqired |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| NEXT_PUBLIC_TITLE                  | CONTENT: title that appears at the top of the landing page                                                                                                                                                                      | yes     |
+| NEXT_PUBLIC_NAME                   | CONTENT: name that appears below title                                                                                                                                                                                          | yes     |
+| NEXT_PUBLIC_SUBTITLE               | CONTENT: subtitle that appears below the name                                                                                                                                                                                   | yes     |
+| NEXT_PUBLIC_ACTION_STATEMENT       | CONTENT: call to action that appears on the button below the subtitle. if not included, button will not appear                                                                                                                  | no      |
+| NEXT_PUBLIC_ACTION                 | CONTENT: relative or absolute url to be brought up in a new tab when call to action is clicked                                                                                                                                  | no      |
+| NEXT_PUBLIC_SOCIALS                | CONTENT: stringified json array of urls to social media profiles displayed at the bottom of the landing page                                                                                                                    | no      |
+| NEXT_PUBLIC_HEADSHOT               | CONTENT: relative or absolute url of the image displayed on the landing page                                                                                                                                                    | yes     |
+| NEXT_PUBLIC_BG_COLOR               | CONTENT: background color of the landing page                                                                                                                                                                                   | no      |
+| NEXT_PUBLIC_BG_IMAGE               | CONTENT: background image of the landing page                                                                                                                                                                                   | no      |
+| NEXT_PUBLIC_ACCENT_COLOR           | CONTENT: main color of the landing page. accents the call to action and social media buttons                                                                                                                                    | no      |
+| NEXT_PUBLIC_SECONDARY_ACCENT_COLOR | CONTENT: secondary color on hover effect of call to action and social media buttons                                                                                                                                             | no      |
+| NEXT_PUBLIC_HIDE_ADMIN             | boolean: hides the admin button from the top right corner. if true, the admin features can still be accessed by manually accessing the path /api/auth/signin                                                                    | no      |
+| NEXT_AUTH_USERNAME                 | username for accessing admin features                                                                                                                                                                                           | no      |
+| NEXT_AUTH_PASSWORD                 | password for accessing admin features. [argon2](https://argon2.online/) hashed                                                                                                                                                  | no      |
+| NEXTAUTH_SECRET                    | [random string used to hash tokens](https://next-auth.js.org/configuration/options#secret). required in order to use admin features                                                                                             | no      |
+| NEXTAUTH_URL                       | [canonical url of your site](https://next-auth.js.org/configuration/options#nextauth_url). automatically set to VERCEL_URL if deploying to Vercel. required in order to use admin features                                      | no      |
+| GH_TOKEN                           | [Github personal access token](https://github.com/settings/tokens). required for accessing Github in admin functions                                                                                                            | no      |
+| VERCEL_TOKEN                       | [Vercel rest api token](https://vercel.com/account/tokens). required for accessing Vercel in admin functions                                                                                                                    | no      |
+| VERCEL_TEAM                        | id of your Vercel team if project is deployed to a team account                                                                                                                                                                 | no      |
+| NEXT_PUBLIC_PROJECT_NAME           | your Vercel project name. should be added after initial deployment if you plan to use the CMS feature                                                                                                                           | no      |
+| AWS_LANDING_S3                     | public AWS S3 butcket url. S3 is a good place to store your headshot so that it is accessible in the meta tags of your website and visible to opengraph and other link preview protocols when sharing your site to social media | no      |
+| AWS_ACCESS_KEY_ID                  | [access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html?icmpid=docs_iam_console#Using_CreateAccessKey) for accessing AWS SDK in admin features                                            | no      |
+| AWS_SECRET_ACCESS_KEY              | secret key for accessing AWS SDK in admin features                                                                                                                                                                              | no      |
