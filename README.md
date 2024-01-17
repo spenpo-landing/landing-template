@@ -1,6 +1,6 @@
-#A full stack implementation of the [spenpo-landing](https://www.npmjs.com/package/spenpo-landing) npm module built with Next.js
+## A full stack implementation of the [spenpo-landing](https://www.npmjs.com/package/spenpo-landing) npm module built with Next.js
 
-##env variables:
+### env variables:
 
 | Variable                           | Description                                                                                                                                                                                                                     | Reqired |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
