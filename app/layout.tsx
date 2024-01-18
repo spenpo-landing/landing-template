@@ -1,11 +1,11 @@
-import "./globals.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { NextAuthProvider } from "./nextAuthProvider";
-import { CmsContextProvider } from "./context/cms";
-import { EnvContextProvider } from "./context/env";
+import { type Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import { NextAuthProvider } from './context/nextAuthProvider'
+import { CmsContextProvider } from './context/cms'
+import { EnvContextProvider } from './context/env'
+import { ThemeProvider } from './context/themeProvider'
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: process.env.NEXT_PUBLIC_NAME,
@@ -17,13 +17,13 @@ export const metadata: Metadata = {
     siteName: process.env.NEXT_PUBLIC_NAME,
     images: [
       {
-        url: process.env.OG_IMAGE || "",
+        url: process.env.OG_IMAGE || '',
         width: 800,
         height: 600,
       },
     ],
-    locale: "en_US",
-    type: "website",
+    locale: 'en_US',
+    type: 'website',
   },
   robots: {
     index: false,
@@ -33,49 +33,47 @@ export const metadata: Metadata = {
       index: true,
       follow: false,
       noimageindex: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
     },
   },
   icons: {
-    icon: process.env.NEXT_PUBLIC_HEADSHOT || "",
-    shortcut: process.env.NEXT_PUBLIC_HEADSHOT || "",
-    apple: process.env.NEXT_PUBLIC_HEADSHOT || "",
+    icon: process.env.NEXT_PUBLIC_HEADSHOT || '',
+    shortcut: process.env.NEXT_PUBLIC_HEADSHOT || '',
+    apple: process.env.NEXT_PUBLIC_HEADSHOT || '',
     other: {
-      rel: "apple-touch-icon-precomposed",
-      url: process.env.NEXT_PUBLIC_HEADSHOT || "",
+      rel: 'apple-touch-icon-precomposed',
+      url: process.env.NEXT_PUBLIC_HEADSHOT || '',
     },
   },
   themeColor: process.env.NEXT_PUBLIC_ACCENT_COLOR,
   twitter: {
-    card: "summary_large_image",
+    card: 'summary_large_image',
     title: process.env.NEXT_PUBLIC_NAME,
     description: process.env.NEXT_PUBLIC_TITLE,
-    creator: "@s_pop3",
-    images: [process.env.OG_IMAGE || ""],
+    creator: '@s_pop3',
+    images: [process.env.OG_IMAGE || ''],
   },
   viewport: {
-    width: "device-width",
+    width: 'device-width',
     initialScale: 1,
     maximumScale: 1,
   },
-};
+}
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <NextAuthProvider>
-          <CmsContextProvider>
-            <EnvContextProvider>{children}</EnvContextProvider>
-          </CmsContextProvider>
-        </NextAuthProvider>
-      </body>
+      <ThemeProvider>
+        <body className={inter.className}>
+          <NextAuthProvider>
+            <CmsContextProvider>
+              <EnvContextProvider>{children}</EnvContextProvider>
+            </CmsContextProvider>
+          </NextAuthProvider>
+        </body>
+      </ThemeProvider>
     </html>
-  );
+  )
 }
