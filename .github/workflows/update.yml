@@ -1,0 +1,18 @@
+name: Update
+on: workflow_dispatch
+
+jobs:
+  update:
+    if: ${{ github.event.repository.name != 'landing-template' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          git -v
+          echo 'updating repository to with template parent'
+  skip:
+    if: ${{ github.event.repository.name == 'landing-template' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo 'skipped for template repository'

@@ -1,0 +1,4 @@
+kind: Added
+body: update workflow. admin page checks template version and compares with current
+  repo version in package.json. displays button for running update workflow
+time: 2024-01-20T14:21:56.760768-07:00
