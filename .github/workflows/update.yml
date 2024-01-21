@@ -8,6 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
+          git remote add landing-template https://github.com/spenpo-landing/landing-template
           git remote update
           git merge --allow-unrelated-histories landing-template/main -X theirs
           git push

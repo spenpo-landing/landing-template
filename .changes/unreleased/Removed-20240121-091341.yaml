@@ -1,0 +1,4 @@
+kind: Removed
+body: add remote on repo create action. remotes only exist locally. need to be created
+  during each update.
+time: 2024-01-21T09:13:41.081351-07:00
