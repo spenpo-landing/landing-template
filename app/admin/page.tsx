@@ -1,6 +1,5 @@
 import { NextPage } from 'next'
-import PageWrapper from '../components/pageWrapper'
-import { Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import React from 'react'
 import Package from '../../package.json'
 import { ReviewChanges } from '../components/reviewChanges'
@@ -29,12 +28,14 @@ const Admin: NextPage = async () => {
   const outOfDate = Package.version !== latestVersion
 
   return (
-    <PageWrapper>
-      <ReviewChanges>{outOfDate && <UpdateBtn />}</ReviewChanges>
-      <Typography variant="caption" sx={{ mt: 'auto' }}>
+    <Stack p={{ xs: 2, sm: 5 }} minHeight="100vh" gap={3}>
+      <ReviewChanges>
+        {outOfDate && <UpdateBtn latestVersion={latestVersion} />}
+      </ReviewChanges>
+      <Typography variant="caption" sx={{ alignSelf: 'center' }}>
         version {Package.version}
       </Typography>
-    </PageWrapper>
+    </Stack>
   )
 }
 

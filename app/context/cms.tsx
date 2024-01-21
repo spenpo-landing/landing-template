@@ -14,6 +14,7 @@ import type { SpenpoLandingCms, SpenpoLandingCmsGetSet } from 'spenpo-landing'
 
 type CmsContextProps = {
   setPassword: Dispatch<SetStateAction<string | undefined>>
+  hideAdmin: [boolean, Dispatch<SetStateAction<boolean>>]
   landingCms: SpenpoLandingCms
   environmentVariables: EnvVariable[]
 }
@@ -58,6 +59,9 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
       DEFAULT_PROPS.SECONDARY_ACCENT_COLOR
   )
   const [password, setPassword] = useState<string>()
+  const [hideAdmin, setHideAdmin] = useState<boolean>(
+    process.env.NEXT_PUBLIC_HIDE_ADMIN === 'true'
+  )
 
   const file = useState<File>()
 
@@ -92,7 +96,7 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     NEXT_PUBLIC_BG_IMAGE: backgroundImage[0],
     NEXT_PUBLIC_ACCENT_COLOR: accentColor[0],
     NEXT_PUBLIC_SECONDARY_ACCENT_COLOR: secondaryAccentColor[0],
-    NEXT_PUBLIC_HIDE_ADMIN: 'false',
+    NEXT_PUBLIC_HIDE_ADMIN: `${hideAdmin}`,
     NEXT_AUTH_USERNAME: session.data?.user?.email,
     NEXT_AUTH_PASSWORD: password,
   })
@@ -114,6 +118,7 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     }
     return {
       setPassword,
+      hideAdmin: [hideAdmin, setHideAdmin],
       landingCms,
       environmentVariables,
     }
@@ -131,6 +136,7 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     socialsGetSet,
     environmentVariables,
     file,
+    hideAdmin,
   ])
 
   return <CmsContext.Provider value={contextValue}>{children}</CmsContext.Provider>

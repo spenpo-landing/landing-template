@@ -6,6 +6,9 @@ import {
   Chip,
   CircularProgress,
   Box,
+  Divider,
+  FormLabel,
+  Checkbox,
 } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import React, { ReactNode, useContext, useState } from 'react'
@@ -16,6 +19,8 @@ import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import EastIcon from '@mui/icons-material/East'
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
+import { ChangePassword } from './changePassword'
 
 const ColorExample: React.FC<{ color: string; opacity?: number }> = ({
   color,
@@ -120,8 +125,14 @@ const TextCompare: React.FC<{
   )
 }
 
-export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({ children }) => {
-  const { environmentVariables, landingCms } = useContext(CmsContext)
+export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
+  children: updateBtn,
+}) => {
+  const {
+    environmentVariables,
+    landingCms,
+    hideAdmin: [hideAdmin, setHideAdmin],
+  } = useContext(CmsContext)
   const env = useContext(EnvContext)
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -131,152 +142,185 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({ children }) 
   return (
     <>
       <Button
-        sx={{ position: 'absolute', left: 40, top: 40 }}
         onClick={() => router.push('/')}
         variant="contained"
         startIcon={<ChevronLeftIcon />}
+        sx={{ mr: 'auto' }}
       >
         Back
       </Button>
-      <Stack justifyContent="flex-start" mx={25} my={15} rowGap={1}>
-        {children}
-        {environmentVariables.map(({ key, value }) => {
-          if (key.startsWith('NEXT_PUBLIC_')) {
-            if (key.endsWith('_HEADSHOT'))
-              return (
-                <ImageCompare
-                  key={key}
-                  label={env[key].label}
-                  condition={!!file}
-                  oldSrc={`/${env.NEXT_PUBLIC_HEADSHOT.value}`}
-                  newSrc={landingCms.headshotSrc.getter() || ''}
-                />
-              )
-            if (key.endsWith('_SOCIALS'))
-              return (
-                env[key].value !== value && (
-                  <Stack
+      <Stack direction={{ xs: 'column', md: 'row' }} gap={3} flex={1}>
+        <Stack rowGap={1} flex={{ xs: 0, md: 1 }} alignItems="center">
+          <Typography variant="h5">Content Changes</Typography>
+          {environmentVariables.map(({ key, value }) => {
+            if (key.startsWith('NEXT_PUBLIC_')) {
+              if (key.endsWith('_HEADSHOT'))
+                return (
+                  <ImageCompare
                     key={key}
-                    direction="row"
-                    columnGap={3}
-                    alignItems="center"
-                    color="#000"
-                    flexWrap="wrap"
-                    rowGap={1}
-                  >
-                    <Typography>{env[key].label}:</Typography>
-                    {(JSON.parse(env[key].value!) as string[]).map((social) => {
-                      const isRemoved = !(JSON.parse(value) as string[]).includes(
-                        social
-                      )
-                      const fill = '#ff0000'
-                      return (
-                        <Chip
-                          key={social}
-                          icon={<RemoveIcon sx={{ fill }} />}
-                          sx={{
-                            display: isRemoved ? 'flex' : 'none',
-                            border: isRemoved ? `solid ${fill} 2px` : '',
-                          }}
-                          label={social}
-                        />
-                      )
-                    })}
-                    {(JSON.parse(value) as string[]).map((social) => {
-                      const isNew = !(
-                        JSON.parse(env[key].value!) as string[]
-                      ).includes(social)
-                      const fill = '#00dd00'
-                      return (
-                        <Chip
-                          key={social}
-                          icon={<AddIcon sx={{ fill }} />}
-                          sx={{
-                            display: isNew ? 'flex' : 'none',
-                            border: isNew ? `solid ${fill} 2px` : '',
-                          }}
-                          label={social}
-                        />
-                      )
-                    })}
-                  </Stack>
+                    label={env[key].label}
+                    condition={!!file}
+                    oldSrc={`/${env.NEXT_PUBLIC_HEADSHOT.value}`}
+                    newSrc={landingCms.headshotSrc.getter() || ''}
+                  />
                 )
-              )
-            if (key.endsWith('_COLOR'))
+              if (key.endsWith('_SOCIALS'))
+                return (
+                  env[key].value !== value && (
+                    <Stack
+                      key={key}
+                      direction="row"
+                      columnGap={3}
+                      alignItems="center"
+                      color="#000"
+                      flexWrap="wrap"
+                      rowGap={1}
+                    >
+                      <Typography>{env[key].label}:</Typography>
+                      {(JSON.parse(env[key].value!) as string[]).map((social) => {
+                        const isRemoved = !(JSON.parse(value) as string[]).includes(
+                          social
+                        )
+                        const fill = '#ff0000'
+                        return (
+                          <Chip
+                            key={social}
+                            icon={<RemoveIcon sx={{ fill }} />}
+                            sx={{
+                              display: isRemoved ? 'flex' : 'none',
+                              border: isRemoved ? `solid ${fill} 2px` : '',
+                            }}
+                            label={social}
+                          />
+                        )
+                      })}
+                      {(JSON.parse(value) as string[]).map((social) => {
+                        const isNew = !(
+                          JSON.parse(env[key].value!) as string[]
+                        ).includes(social)
+                        const fill = '#00dd00'
+                        return (
+                          <Chip
+                            key={social}
+                            icon={<AddIcon sx={{ fill }} />}
+                            sx={{
+                              display: isNew ? 'flex' : 'none',
+                              border: isNew ? `solid ${fill} 2px` : '',
+                            }}
+                            label={social}
+                          />
+                        )
+                      })}
+                    </Stack>
+                  )
+                )
+              if (key.endsWith('_COLOR'))
+                return (
+                  <ColorCompare
+                    key={key}
+                    oldColor={env[key].value!}
+                    newColor={value}
+                    condition={env[key].value !== value}
+                    label={env[key].label}
+                  />
+                )
+              if (key.endsWith('_IMAGE'))
+                return (
+                  <ImageCompare
+                    key={key}
+                    label={env[key].label}
+                    condition={
+                      landingCms.backgroundImage.getter() !==
+                      (env.NEXT_PUBLIC_BG_IMAGE.value || DEFAULT_PROPS.BG_IMAGE)
+                    }
+                    oldSrc={env.NEXT_PUBLIC_BG_IMAGE.value!}
+                    newSrc={landingCms.backgroundImage.getter()!}
+                  />
+                )
+              if (key.endsWith('_ADMIN')) return <></>
               return (
-                <ColorCompare
+                <TextCompare
                   key={key}
-                  oldColor={env[key].value!}
-                  newColor={value}
+                  label={env[key].label}
+                  oldText={env[key].value}
+                  newText={value}
                   condition={env[key].value !== value}
-                  label={env[key].label}
                 />
               )
-            if (key.endsWith('_IMAGE'))
-              return (
-                <ImageCompare
-                  key={key}
-                  label={env[key].label}
-                  condition={
-                    landingCms.backgroundImage.getter() !==
-                    (env.NEXT_PUBLIC_BG_IMAGE.value || DEFAULT_PROPS.BG_IMAGE)
-                  }
-                  oldSrc={env.NEXT_PUBLIC_BG_IMAGE.value!}
-                  newSrc={landingCms.backgroundImage.getter()!}
-                />
-              )
-            return (
-              <TextCompare
-                key={key}
-                label={env[key].label}
-                oldText={env[key].value}
-                newText={value}
-                condition={env[key].value !== value}
-              />
-            )
-          }
-        })}
-      </Stack>
-      <Stack direction="row" columnGap={3}>
-        <Button
-          sx={{ width: 100 }}
-          variant="contained"
-          onClick={async () => {
-            setLoading(true)
-            const redeployReq = await fetch('/api/redeploy', {
-              method: 'post',
-              body: JSON.stringify(environmentVariables),
-            })
-            if (file) {
-              const signedUrlReq = await fetch(
-                `/api/get-signed-s3-url?fileext=${file?.name
-                  .split('.')
-                  .at(-1)}&filetype=${file?.type}`,
-                {
-                  method: 'get',
-                }
-              )
-              const signedUrl = await signedUrlReq.json()
-              await fetch(signedUrl.url, {
-                method: 'put',
-                headers: { 'Content-Type': file?.type },
-                body: file,
-              })
             }
-            await redeployReq
-              .json()
-              .then((res) =>
-                router.push(
-                  `/deployments/${res.redeployRes.id}?createdAt=${res.redeployRes.createdAt}`
-                )
-              )
-          }}
-        >
-          {loading ? <CircularProgress /> : 'deploy'}
-        </Button>
-        <Button sx={{ width: 100 }} variant="contained" href="/">
-          cancel
-        </Button>
+          })}
+        </Stack>
+        <Divider flexItem sx={{ display: { md: 'none', sm: 'block' } }} />
+        <Divider
+          flexItem
+          sx={{ display: { md: 'block', sm: 'none' } }}
+          orientation="vertical"
+        />
+        <Stack flex={{ xs: 0, md: 1 }} alignItems="center" gap={3}>
+          <Typography variant="h5">Additional Options</Typography>
+          {updateBtn}
+          <Stack alignItems="center">
+            <Stack direction="row" gap={3} alignItems="center">
+              <Stack direction="row" gap={1}>
+                <AdminPanelSettingsIcon fontSize="small" />
+                <FormLabel>Hide admin button</FormLabel>
+              </Stack>
+              <Checkbox
+                checked={hideAdmin}
+                onChange={(e) => setHideAdmin(e.target.checked)}
+              />
+            </Stack>
+            {hideAdmin && (
+              <Typography variant="caption">
+                admin button will no longer appear in the top right corner of your
+                landing page to unauthenticated visitors. you may still manually
+                navigate to the relative URL /api/auth/signin to sign in as an admin.
+              </Typography>
+            )}
+          </Stack>
+          <ChangePassword />
+          <Stack direction="row" columnGap={3}>
+            <Button
+              sx={{ width: 100 }}
+              variant="contained"
+              onClick={async () => {
+                setLoading(true)
+                const redeployReq = await fetch('/api/redeploy', {
+                  method: 'post',
+                  body: JSON.stringify(environmentVariables),
+                })
+                if (file) {
+                  const signedUrlReq = await fetch(
+                    `/api/get-signed-s3-url?fileext=${file?.name
+                      .split('.')
+                      .at(-1)}&filetype=${file?.type}`,
+                    {
+                      method: 'get',
+                    }
+                  )
+                  const signedUrl = await signedUrlReq.json()
+                  await fetch(signedUrl.url, {
+                    method: 'put',
+                    headers: { 'Content-Type': file?.type },
+                    body: file,
+                  })
+                }
+                await redeployReq
+                  .json()
+                  .then((res) =>
+                    router.push(
+                      `/deployments/${res.redeployRes.id}?createdAt=${res.redeployRes.createdAt}`
+                    )
+                  )
+              }}
+            >
+              {loading ? <CircularProgress /> : 'deploy'}
+            </Button>
+            <Button sx={{ width: 100 }} variant="contained" href="/">
+              cancel
+            </Button>
+          </Stack>
+        </Stack>
       </Stack>
     </>
   )

@@ -54,10 +54,6 @@ export const EnvContextProvider: React.FC<{ children: ReactNode }> = ({
           DEFAULT_PROPS.SECONDARY_ACCENT_COLOR,
         label: 'Secondary Accent Color',
       },
-      NEXT_PUBLIC_HIDE_ADMIN: {
-        value: process.env.NEXT_PUBLIC_HIDE_ADMIN,
-        label: 'Hide Admin Button',
-      },
     }
   }, [])
 

@@ -1,10 +1,6 @@
 'use client'
 
-import {
-  CssBaseline,
-  ThemeProvider as MuiThemeProvider,
-  createTheme,
-} from '@mui/material'
+import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material'
 import { useMemo } from 'react'
 
 type Props = {
@@ -29,10 +25,5 @@ export const ThemeProvider = ({ children }: Props) => {
       }),
     []
   )
-  return (
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      {children}
-    </MuiThemeProvider>
-  )
+  return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
 }

@@ -1,11 +1,10 @@
 import { type Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import { NextAuthProvider } from './context/nextAuthProvider'
 import { CmsContextProvider } from './context/cms'
 import { EnvContextProvider } from './context/env'
 import { ThemeProvider } from './context/themeProvider'
-
-const inter = Inter({ subsets: ['latin'] })
+import { CssBaseline } from '@mui/material'
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter'
 
 export const metadata: Metadata = {
   title: process.env.NEXT_PUBLIC_NAME,
@@ -65,15 +64,18 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <ThemeProvider>
-        <body className={inter.className}>
-          <NextAuthProvider>
-            <CmsContextProvider>
-              <EnvContextProvider>{children}</EnvContextProvider>
-            </CmsContextProvider>
-          </NextAuthProvider>
-        </body>
-      </ThemeProvider>
+      <body>
+        <AppRouterCacheProvider>
+          <ThemeProvider>
+            <CssBaseline />
+            <NextAuthProvider>
+              <CmsContextProvider>
+                <EnvContextProvider>{children}</EnvContextProvider>
+              </CmsContextProvider>
+            </NextAuthProvider>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
+      </body>
     </html>
   )
 }

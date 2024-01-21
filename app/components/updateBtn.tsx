@@ -3,7 +3,9 @@ import React, { useState } from 'react'
 import { Button, CircularProgress, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
 
-export const UpdateBtn: React.FC = () => {
+export const UpdateBtn: React.FC<{ latestVersion: string }> = ({
+  latestVersion,
+}) => {
   const [loading, setLoading] = useState(false)
   const [failure, setFailure] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -27,7 +29,8 @@ export const UpdateBtn: React.FC = () => {
   if (success)
     return (
       <Typography>
-        Update initiated. Please allow a few minutes. You can track the progress at{' '}
+        Update initiated. Please allow a few minutes for the changes to take effect.
+        You can track the progress at{' '}
         <Link href="https://www.spenpo.com/products/landing-page/my-sites">
           spenpo.com/products/landing-page/my-sites
         </Link>
@@ -36,7 +39,7 @@ export const UpdateBtn: React.FC = () => {
 
   return (
     <Stack direction={{ xs: 'column', md: 'row' }} gap={3} alignItems="center">
-      <Typography>New version available</Typography>
+      <Typography>Version {latestVersion} is now available:</Typography>
       <Button onClick={update} variant="contained" sx={{ width: 250 }}>
         {loading ? <CircularProgress /> : 'Click here to update'}
       </Button>
