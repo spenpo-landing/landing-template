@@ -19,14 +19,14 @@ const Admin: NextPage = async () => {
   const base64ToString = Buffer.from(packagejson.content, 'base64').toString()
   const latestVersion = JSON.parse(base64ToString).version
 
-  const currentVersionRes = await getProjectVersion(
-    process.env.NEXT_PUBLIC_PROJECT_NAME || ''
-  )
-  const currentpackage = currentVersionRes.data as unknown as { content: string }
-  const currentToString = Buffer.from(currentpackage.content, 'base64').toString()
-  const currentVersion = JSON.parse(currentToString).version
+  // const currentVersionRes = await getProjectVersion(
+  //   process.env.NEXT_PUBLIC_PROJECT_NAME || ''
+  // )
+  // const currentpackage = currentVersionRes.data as unknown as { content: string }
+  // const currentToString = Buffer.from(currentpackage.content, 'base64').toString()
+  // const currentVersion = JSON.parse(currentToString).version
 
-  const outOfDate = currentVersion !== latestVersion
+  const outOfDate = Package.version !== latestVersion
 
   return (
     <PageWrapper>

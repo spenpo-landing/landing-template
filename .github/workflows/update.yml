@@ -8,11 +8,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          git -v
-          echo 'updating repository to with template parent'
+          git remote update
+          git merge --allow-unrelated-histories landing-template/main -X theirs
+          git push
   skip:
     if: ${{ github.event.repository.name == 'landing-template' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - run: echo 'skipped for template repository'

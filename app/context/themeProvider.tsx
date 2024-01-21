@@ -12,7 +12,23 @@ type Props = {
 }
 
 export const ThemeProvider = ({ children }: Props) => {
-  const theme = useMemo(() => createTheme({}), [])
+  const theme = useMemo(
+    () =>
+      createTheme({
+        components: {
+          MuiCircularProgress: {
+            styleOverrides: {
+              root: {
+                height: '24.5px !important',
+                width: '24.5px !important',
+                color: '#fff',
+              },
+            },
+          },
+        },
+      }),
+    []
+  )
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />

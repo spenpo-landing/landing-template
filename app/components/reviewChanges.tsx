@@ -242,41 +242,37 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({ children }) 
           sx={{ width: 100 }}
           variant="contained"
           onClick={async () => {
-            setLoading(!loading)
-            //   const redeployReq = await fetch('/api/redeploy', {
-            //     method: 'post',
-            //     body: JSON.stringify(environmentVariables),
-            //   })
-            //   if (file) {
-            //     const signedUrlReq = await fetch(
-            //       `/api/get-signed-s3-url?fileext=${file?.name
-            //         .split('.')
-            //         .at(-1)}&filetype=${file?.type}`,
-            //       {
-            //         method: 'get',
-            //       }
-            //     )
-            //     const signedUrl = await signedUrlReq.json()
-            //     await fetch(signedUrl.url, {
-            //       method: 'put',
-            //       headers: { 'Content-Type': file?.type },
-            //       body: file,
-            //     })
-            //   }
-            //   await redeployReq
-            //     .json()
-            //     .then((res) =>
-            //       router.push(
-            //         `/deployments/${res.redeployRes.id}?createdAt=${res.redeployRes.createdAt}`
-            //       )
-            //     )
+            setLoading(true)
+            const redeployReq = await fetch('/api/redeploy', {
+              method: 'post',
+              body: JSON.stringify(environmentVariables),
+            })
+            if (file) {
+              const signedUrlReq = await fetch(
+                `/api/get-signed-s3-url?fileext=${file?.name
+                  .split('.')
+                  .at(-1)}&filetype=${file?.type}`,
+                {
+                  method: 'get',
+                }
+              )
+              const signedUrl = await signedUrlReq.json()
+              await fetch(signedUrl.url, {
+                method: 'put',
+                headers: { 'Content-Type': file?.type },
+                body: file,
+              })
+            }
+            await redeployReq
+              .json()
+              .then((res) =>
+                router.push(
+                  `/deployments/${res.redeployRes.id}?createdAt=${res.redeployRes.createdAt}`
+                )
+              )
           }}
         >
-          {loading ? (
-            <CircularProgress style={{ height: 24.5, width: 24.5, color: '#fff' }} />
-          ) : (
-            'deploy'
-          )}
+          {loading ? <CircularProgress /> : 'deploy'}
         </Button>
         <Button sx={{ width: 100 }} variant="contained" href="/">
           cancel
