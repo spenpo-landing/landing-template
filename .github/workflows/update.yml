@@ -7,11 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: |
-          git remote add landing-template https://github.com/spenpo-landing/landing-template
-          git remote update
-          git merge --allow-unrelated-histories landing-template/main -X theirs
-          git push
+      - run: git remote add landing-template https://github.com/spenpo-landing/landing-template
+      - run: git remote update
+      - run: git config --global user.email "spenpo@spenpo.com"
+      - run: git config --global user.name "spenpo"
+      - run: git merge --allow-unrelated-histories landing-template/main -X theirs
+      - run: git push
   skip:
     if: ${{ github.event.repository.name == 'landing-template' }}
     runs-on: ubuntu-latest
