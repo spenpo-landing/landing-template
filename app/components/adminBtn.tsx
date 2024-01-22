@@ -27,19 +27,20 @@ const config = {
 const AdminBtn: React.FC = () => {
   const session = useSession()
   const hideAdmin = JSON.parse(process.env.NEXT_PUBLIC_HIDE_ADMIN || '')
+
+  if (hideAdmin && session.status !== 'authenticated') return <></>
+
   return (
-    !hideAdmin && (
-      <IconButton
-        href={config[session.status].href}
-        sx={{
-          position: 'absolute',
-          right: session.status === 'authenticated' ? 80 : 0,
-          opacity: config[session.status].opacity,
-        }}
-      >
-        {config[session.status].icon}
-      </IconButton>
-    )
+    <IconButton
+      href={config[session.status].href}
+      sx={{
+        position: 'absolute',
+        right: session.status === 'authenticated' ? 80 : 0,
+        opacity: config[session.status].opacity,
+      }}
+    >
+      {config[session.status].icon}
+    </IconButton>
   )
 }
 

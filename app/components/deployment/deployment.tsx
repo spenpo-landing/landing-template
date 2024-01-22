@@ -142,7 +142,13 @@ export const Deployment: React.FC<{ id: string; createdAt: number }> = ({
             ).toFixed()}s`}</Typography>
           ) : (
             <Typography>
-              <CircularProgress style={{ height: 12, width: 12, color: '#000' }} />
+              <CircularProgress
+                style={{
+                  height: '12px !important',
+                  width: '12px !important',
+                  color: '#000',
+                }}
+              />
               <Typography
                 suppressHydrationWarning
                 component="span"
