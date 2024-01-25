@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
 
   // check file
   if (file && typeof file === 'object') {
-    const blob = new Blob(file)
+    const blob = new Blob([file])
     const buffer = Buffer.from(await blob.arrayBuffer())
     const headshotBase64 = buffer.toString('base64')
 
