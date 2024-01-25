@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description: process.env.NEXT_PUBLIC_TITLE,
     url: process.env.VERCEL_URL,
     siteName: process.env.NEXT_PUBLIC_NAME,
-    images: [`${process.env.OG_IMAGE}`, '/default.svg'],
+    images: [`${process.env.NEXT_PUBLIC_HEADSHOT}`, '/default.svg'],
     locale: 'en_US',
     type: 'website',
   },
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     title: process.env.NEXT_PUBLIC_NAME,
     description: process.env.NEXT_PUBLIC_TITLE,
     creator: '@s_pop3',
-    images: [`${process.env.OG_IMAGE}`, '/default.svg'],
+    images: [`${process.env.NEXT_PUBLIC_HEADSHOT}`, '/default.svg'],
   },
 }
 
