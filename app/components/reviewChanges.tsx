@@ -152,7 +152,7 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
       <Stack direction={{ xs: 'column', md: 'row' }} gap={3} flex={1}>
         <Stack rowGap={1} flex={{ xs: 0, md: 1 }} alignItems="center">
           <Typography variant="h5">Content Changes</Typography>
-          {environmentVariables.map(({ key, value }) => {
+          {Object.entries(environmentVariables).map(([key, value]) => {
             if (key.startsWith('NEXT_PUBLIC_')) {
               if (key.endsWith('_HEADSHOT'))
                 return (
@@ -178,9 +178,8 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
                     >
                       <Typography>{env[key].label}:</Typography>
                       {(JSON.parse(env[key].value!) as string[]).map((social) => {
-                        const isRemoved = !(JSON.parse(value) as string[]).includes(
-                          social
-                        )
+                        const isRemoved =
+                          value && !(JSON.parse(value) as string[]).includes(social)
                         const fill = '#ff0000'
                         return (
                           <Chip
@@ -194,23 +193,24 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
                           />
                         )
                       })}
-                      {(JSON.parse(value) as string[]).map((social) => {
-                        const isNew = !(
-                          JSON.parse(env[key].value!) as string[]
-                        ).includes(social)
-                        const fill = '#00dd00'
-                        return (
-                          <Chip
-                            key={social}
-                            icon={<AddIcon sx={{ fill }} />}
-                            sx={{
-                              display: isNew ? 'flex' : 'none',
-                              border: isNew ? `solid ${fill} 2px` : '',
-                            }}
-                            label={social}
-                          />
-                        )
-                      })}
+                      {value &&
+                        (JSON.parse(value) as string[]).map((social) => {
+                          const isNew = !(
+                            JSON.parse(env[key].value!) as string[]
+                          ).includes(social)
+                          const fill = '#00dd00'
+                          return (
+                            <Chip
+                              key={social}
+                              icon={<AddIcon sx={{ fill }} />}
+                              sx={{
+                                display: isNew ? 'flex' : 'none',
+                                border: isNew ? `solid ${fill} 2px` : '',
+                              }}
+                              label={social}
+                            />
+                          )
+                        })}
                     </Stack>
                   )
                 )
@@ -219,7 +219,7 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
                   <ColorCompare
                     key={key}
                     oldColor={env[key].value!}
-                    newColor={value}
+                    newColor={value || ''}
                     condition={env[key].value !== value}
                     label={env[key].label}
                   />
@@ -243,7 +243,7 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
                   key={key}
                   label={env[key].label}
                   oldText={env[key].value}
-                  newText={value}
+                  newText={value || ''}
                   condition={env[key].value !== value}
                 />
               )
@@ -284,34 +284,23 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
               sx={{ width: 100 }}
               variant="contained"
               onClick={async () => {
+                const body = new FormData()
+                Object.entries(environmentVariables).forEach(([key, value]) => {
+                  if (value) body.append(key, value)
+                })
+                if (file) {
+                  body.append('file', file)
+                  body.append('fileExtension', file.name.split('.').at(-1) || '')
+                }
                 setLoading(true)
                 const redeployReq = await fetch('/api/redeploy', {
                   method: 'post',
-                  body: JSON.stringify(environmentVariables),
+                  body,
                 })
-                if (file) {
-                  const signedUrlReq = await fetch(
-                    `/api/get-signed-s3-url?fileext=${file?.name
-                      .split('.')
-                      .at(-1)}&filetype=${file?.type}`,
-                    {
-                      method: 'get',
-                    }
-                  )
-                  const signedUrl = await signedUrlReq.json()
-                  await fetch(signedUrl.url, {
-                    method: 'put',
-                    headers: { 'Content-Type': file?.type },
-                    body: file,
-                  })
-                }
-                await redeployReq
-                  .json()
-                  .then((res) =>
-                    router.push(
-                      `/deployments/${res.redeployRes.id}?createdAt=${res.redeployRes.createdAt}`
-                    )
-                  )
+                const redeploy = await redeployReq.json()
+                router.push(
+                  `/deployments/${redeploy.redeployRes.id}?createdAt=${redeploy.redeployRes.createdAt}`
+                )
               }}
             >
               {loading ? <CircularProgress /> : 'deploy'}

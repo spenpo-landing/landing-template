@@ -1,6 +1,5 @@
 'use client'
 import { DEFAULT_PROPS } from '../constants'
-import { EnvVariable, useLandEnvVars } from '../hooks/useEnvVariables'
 import { useSession } from 'next-auth/react'
 import React, {
   Dispatch,
@@ -16,7 +15,7 @@ type CmsContextProps = {
   setPassword: Dispatch<SetStateAction<string | undefined>>
   hideAdmin: [boolean, Dispatch<SetStateAction<boolean>>]
   landingCms: SpenpoLandingCms
-  environmentVariables: EnvVariable[]
+  environmentVariables: { [key: string]: string | undefined }
 }
 
 export const CmsContext = createContext({} as CmsContextProps)
@@ -84,13 +83,12 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     }
   }
 
-  const environmentVariables = useLandEnvVars({
+  const environmentVariables = {
     NEXT_PUBLIC_TITLE: title[0],
     NEXT_PUBLIC_NAME: clientName[0],
     NEXT_PUBLIC_SUBTITLE: subtitle[0],
     NEXT_PUBLIC_SOCIALS: socialUrls,
     NEXT_PUBLIC_ACTION_STATEMENT: actionStatement[0],
-    NEXT_PUBLIC_HEADSHOT: headshotSrc[0],
     NEXT_PUBLIC_ACTION: actionDestination[0],
     NEXT_PUBLIC_BG_COLOR: backgroundColor[0],
     NEXT_PUBLIC_BG_IMAGE: backgroundImage[0],
@@ -99,7 +97,8 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     NEXT_PUBLIC_HIDE_ADMIN: `${hideAdmin}`,
     NEXT_AUTH_USERNAME: session.data?.user?.email,
     NEXT_AUTH_PASSWORD: password,
-  })
+    NEXT_PUBLIC_HEADSHOT: headshotSrc[0],
+  }
 
   const contextValue: CmsContextProps = useMemo(() => {
     const landingCms: SpenpoLandingCms = {
@@ -122,6 +121,7 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
       landingCms,
       environmentVariables,
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     headshotSrc,
     clientName,
@@ -133,10 +133,10 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
     secondaryAccentColor,
     backgroundColor,
     backgroundImage,
-    socialsGetSet,
-    environmentVariables,
+    socialUrls,
     file,
     hideAdmin,
+    password,
   ])
 
   return <CmsContext.Provider value={contextValue}>{children}</CmsContext.Provider>
