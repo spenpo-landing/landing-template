@@ -24,7 +24,6 @@ export const metadata: Metadata = {
   openGraph: {
     title: process.env.NEXT_PUBLIC_NAME,
     description: process.env.NEXT_PUBLIC_TITLE,
-    url: process.env.VERCEL_URL,
     siteName: process.env.NEXT_PUBLIC_NAME,
     images: [`${process.env.NEXT_PUBLIC_HEADSHOT}`, '/default.svg'],
     locale: 'en_US',
