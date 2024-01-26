@@ -117,7 +117,7 @@ export const Deployment: React.FC<{ id: string; createdAt: number }> = ({
   }, [offsetTimestamp])
 
   return (
-    <Stack p={{ xs: 2, md: 5 }} rowGap={3} flex={1} width="100%">
+    <>
       <Stack gap={3} direction={{ xs: 'column', md: 'row' }}>
         <Stack sx={METADATA_SX}>
           <SmallHeader>Status</SmallHeader>
@@ -217,6 +217,6 @@ export const Deployment: React.FC<{ id: string; createdAt: number }> = ({
           </Typography>
         )}
       </Stack>
-    </Stack>
+    </>
   )
 }

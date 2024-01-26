@@ -11,9 +11,9 @@
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.5",
-    "@mui/material": "^5.15.5",
-    "@mui/material-nextjs": "^5.15.5",
+    "@mui/icons-material": "^5.15.6",
+    "@mui/material": "^5.15.6",
+    "@mui/material-nextjs": "^5.15.6",
     "argon2": "^0.31.2",
     "next": "^13.5.6",
     "next-auth": "^4.24.5",
@@ -22,13 +22,13 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-timer-hook": "^3.0.7",
-    "spenpo-landing": "^2.0.10"
+    "spenpo-landing": "^2.0.12"
   },
   "devDependencies": {
     "@types/node": "20.4.5",
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
     "eslint": "^8.56.0",
     "eslint-config-next": "14.0.4",
     "eslint-config-prettier": "^9.1.0",

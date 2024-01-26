@@ -1,0 +1,4 @@
+kind: Changed
+body: redirect flow when deploying changes. when changing headshot, a link to /deployments/latest
+  appears
+time: 2024-01-26T16:25:56.987191-07:00

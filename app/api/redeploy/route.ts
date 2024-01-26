@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
     const variableId = envVarIds.envs.find(
       (env: { key: string }) => env.key === 'NEXT_PUBLIC_HEADSHOT'
     )?.id
+
     if (variableId) {
       envEdits.push(
         editEnvironmentVariable(projectName, variableId, `/${headshotFileName}`)
@@ -128,36 +129,13 @@ export async function POST(req: NextRequest) {
     // 9. push commit to deploy vercel project
     try {
       await pushCommit(projectName, newCommitShaRes.data.sha)
+      return NextResponse.json({
+        status: 200,
+        message: 'A new deployment has been kicked off with your changes.',
+      })
     } catch (err: any) {
       console.log(9, 'catch', err.response.data)
       return NextResponse.json({ status: 400, ...err.redponse.data })
-    }
-
-    const getLatestDeployment = async (): Promise<any> => {
-      try {
-        const deployments = await getProjectDeployments(projectName)
-        const deploymentRes = await deployments.json()
-        const deployment = deploymentRes.deployments[0]
-        if (deployment.readyState === 'READY') return await getLatestDeployment()
-      } catch (err: any) {
-        console.log(10, 'catch', err.response.data)
-        return err
-      }
-    }
-
-    // 10. get latest deployment id
-    try {
-      const deployments = await getLatestDeployment()
-      const deploymentRes = await deployments.json()
-      const deployment = deploymentRes.deployments[0]
-      console.log(deployment)
-
-      return NextResponse.json({
-        redirect: `/deployments/${deployment.uid}?createdAt=${deployment.created}`,
-      })
-    } catch (err: any) {
-      console.log(10, 'catch', err)
-      return NextResponse.json({ status: 400, ...err })
     }
   } else {
     // get latest deployment id
@@ -169,6 +147,8 @@ export async function POST(req: NextRequest) {
     const redeploy = await redeployProject(deploymentId, projectName)
     const redeployRes = await redeploy.json()
     return NextResponse.json({
+      status: 200,
+      message: 'A new deployment has been kicked off with your changes.',
       redirect: `/deployments/${redeployRes.id}?createdAt=${redeployRes.createdAt}`,
     })
   }
