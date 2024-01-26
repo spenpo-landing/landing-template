@@ -284,6 +284,7 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
               sx={{ width: 100 }}
               variant="contained"
               onClick={async () => {
+                setLoading(true)
                 const body = new FormData()
                 Object.entries(environmentVariables).forEach(([key, value]) => {
                   if (value) body.append(key, value)
@@ -292,15 +293,12 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
                   body.append('file', file)
                   body.append('fileExtension', file.name.split('.').at(-1) || '')
                 }
-                setLoading(true)
                 const redeployReq = await fetch('/api/redeploy', {
                   method: 'post',
                   body,
                 })
                 const redeploy = await redeployReq.json()
-                router.push(
-                  `/deployments/${redeploy.redeployRes.id}?createdAt=${redeploy.redeployRes.createdAt}`
-                )
+                router.push(redeploy.redirect)
               }}
             >
               {loading ? <CircularProgress /> : 'deploy'}

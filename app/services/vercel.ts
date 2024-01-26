@@ -52,6 +52,15 @@ const cancelDeployment = async (deploymentId: string) =>
     method: 'patch',
   })
 
+const getEnvironmentVariables = async (projectName: string) =>
+  fetch(
+    `https://api.vercel.com/v9/projects/${projectName}/env?teamId=${process.env.VERCEL_TEAM}`,
+    {
+      headers,
+      method: 'get',
+    }
+  )
+
 const addEnvironmentVariables = async (
   projectName: string,
   variables: ProjectEnvVariableInput[]
@@ -62,6 +71,23 @@ const addEnvironmentVariables = async (
       body: JSON.stringify(variables),
       headers,
       method: 'post',
+    }
+  )
+
+const editEnvironmentVariable = async (
+  projectName: string,
+  variableId: string,
+  value: string
+) =>
+  fetch(
+    `https://api.vercel.com/v9/projects/${projectName}/env/${variableId}?teamId=${process.env.VERCEL_TEAM}`,
+    {
+      body: JSON.stringify({
+        value,
+        comment: `updated on ${new Date().toLocaleString()}`,
+      }),
+      headers,
+      method: 'PATCH',
     }
   )
 
@@ -88,7 +114,9 @@ export {
   getDeploymentAliases,
   redeployProject,
   cancelDeployment,
+  getEnvironmentVariables,
   addEnvironmentVariables,
+  editEnvironmentVariable,
   getDeployment,
   getDeploymentEvents,
 }

@@ -7,8 +7,8 @@ import {
   pushCommit,
 } from '@/app/services/github'
 import {
-  ProjectEnvVariableInput,
-  addEnvironmentVariables,
+  editEnvironmentVariable,
+  getEnvironmentVariables,
   getProjectDeployments,
   redeployProject,
 } from '@/app/services/vercel'
@@ -18,48 +18,51 @@ export async function POST(req: NextRequest) {
   const projectName = process.env.NEXT_PUBLIC_PROJECT_NAME!
   const BODY = await req.formData()
   const file = BODY.get('file')
+  if (file) BODY.delete('file')
   const fileExtension = BODY.get('fileExtension')
   if (fileExtension) BODY.delete('fileExtension')
   const headshotFileName = `headshot.${fileExtension}`
 
-  const environmentVariables: ProjectEnvVariableInput[] = []
+  const envVarIdsReq = await getEnvironmentVariables(projectName)
+  const envVarIds = await envVarIdsReq.json()
+
+  const envEdits: Promise<Response>[] = []
 
   if (file) {
-    environmentVariables.push({
-      key: 'NEXT_PUBLIC_HEADSHOT',
-      value: `/${headshotFileName}`,
-      target: ['production', 'preview', 'development'],
-      type: 'encrypted',
-    })
+    const variableId = envVarIds.envs.find(
+      (env: { key: string }) => env.key === 'NEXT_PUBLIC_HEADSHOT'
+    )?.id
+    if (variableId) {
+      envEdits.push(
+        editEnvironmentVariable(projectName, variableId, `/${headshotFileName}`)
+      )
+    }
     BODY.delete('NEXT_PUBLIC_HEADSHOT')
   }
 
   for (const [key, value] of BODY.entries()) {
     if (typeof value === 'string' && value !== process.env[key]) {
-      environmentVariables.push({
-        key,
-        value,
-        target: ['production', 'preview', 'development'],
-        type: 'encrypted',
-      })
+      const variableId = envVarIds.envs.find(
+        (env: { key: string }) => env.key === key
+      )?.id
+
+      if (variableId) {
+        envEdits.push(editEnvironmentVariable(projectName, variableId, value))
+      }
     }
   }
 
-  // add env variables
-  const addEnvs = await addEnvironmentVariables(projectName, environmentVariables)
-
-  const envRes = await addEnvs.json()
-
-  // get latest deployment id
-  const deployments = await getProjectDeployments(projectName)
-
-  const deploymentRes = await deployments.json()
-
-  const deploymentId = deploymentRes.deployments[0].uid
+  // edit env variables
+  try {
+    await Promise.all(envEdits)
+  } catch (err: any) {
+    console.log(2, 'catch', err.response.data)
+    return NextResponse.json({ status: 400, ...err.response.data })
+  }
 
   // check file
-  if (file && typeof file === 'object') {
-    const blob = new Blob(file)
+  if (file) {
+    const blob = new Blob([file])
     const buffer = Buffer.from(await blob.arrayBuffer())
     const headshotBase64 = buffer.toString('base64')
 
@@ -124,16 +127,49 @@ export async function POST(req: NextRequest) {
 
     // 9. push commit to deploy vercel project
     try {
-      const push = await pushCommit(projectName, newCommitShaRes.data.sha)
-      if (push.status === 200) NextResponse.json({ status: 200, message: 'success' })
+      await pushCommit(projectName, newCommitShaRes.data.sha)
     } catch (err: any) {
       console.log(9, 'catch', err.response.data)
-      return NextResponse.json({ status: 400, ...err.response.data })
+      return NextResponse.json({ status: 400, ...err.redponse.data })
+    }
+
+    const getLatestDeployment = async (): Promise<any> => {
+      try {
+        const deployments = await getProjectDeployments(projectName)
+        const deploymentRes = await deployments.json()
+        const deployment = deploymentRes.deployments[0]
+        if (deployment.readyState === 'READY') return await getLatestDeployment()
+      } catch (err: any) {
+        console.log(10, 'catch', err.response.data)
+        return err
+      }
+    }
+
+    // 10. get latest deployment id
+    try {
+      const deployments = await getLatestDeployment()
+      const deploymentRes = await deployments.json()
+      const deployment = deploymentRes.deployments[0]
+      console.log(deployment)
+
+      return NextResponse.json({
+        redirect: `/deployments/${deployment.uid}?createdAt=${deployment.created}`,
+      })
+    } catch (err: any) {
+      console.log(10, 'catch', err)
+      return NextResponse.json({ status: 400, ...err })
     }
   } else {
-    // redeploy project
+    // get latest deployment id
+    const deployments = await getProjectDeployments(projectName)
+
+    const deploymentRes = await deployments.json()
+
+    const deploymentId = deploymentRes.deployments[0].uid
     const redeploy = await redeployProject(deploymentId, projectName)
     const redeployRes = await redeploy.json()
-    return NextResponse.json({ redeployRes, envRes })
+    return NextResponse.json({
+      redirect: `/deployments/${redeployRes.id}?createdAt=${redeployRes.createdAt}`,
+    })
   }
 }
