@@ -1,4 +1,3 @@
-import { NextPage } from 'next'
 import { Stack, Typography } from '@mui/material'
 import React from 'react'
 import Package from '../../package.json'
@@ -9,7 +8,7 @@ import { authOptions } from '../api/auth/[...nextauth]/route'
 import { getProjectVersion } from '../services/github'
 import { UpdateBtn } from '../components/updateBtn'
 
-const Admin: NextPage = async () => {
+export default async function Admin() {
   const session = await getServerSession(authOptions)
   if (!session) redirect('/')
 
@@ -38,5 +37,3 @@ const Admin: NextPage = async () => {
     </Stack>
   )
 }
-
-export default Admin

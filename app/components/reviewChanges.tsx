@@ -21,6 +21,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import EastIcon from '@mui/icons-material/East'
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 import { ChangePassword } from './changePassword'
+import Link from 'next/link'
 
 const ColorExample: React.FC<{ color: string; opacity?: number }> = ({
   color,
@@ -62,8 +63,8 @@ const BgImage: React.FC<{ src: string; opacity?: number }> = ({
 }) => {
   return (
     <Box
-      height={200}
-      width={200}
+      height={{ xs: 50, sm: 100, md: 200 }}
+      width={{ xs: 50, sm: 100, md: 200 }}
       m="2px"
       sx={{
         backgroundImage: `url(${src})`,
@@ -88,7 +89,11 @@ const ImageCompare: React.FC<{
     condition && (
       <>
         <Typography color="#000">{label}:</Typography>
-        <Stack direction="row" columnGap={10} alignItems="center">
+        <Stack
+          direction="row"
+          columnGap={{ xs: 2, sm: 5, md: 10 }}
+          alignItems="center"
+        >
           <BgImage src={oldSrc} opacity={0.6} />
           <EastIcon sx={{ fill: '#000', fontSize: 40 }} />
           <BgImage src={newSrc} />
@@ -136,6 +141,8 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
   const env = useContext(EnvContext)
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [noRedirect, setNoRedirect] = useState('')
+  const [error, setError] = useState('')
 
   const file = landingCms?.headshotFile.getter()
 
@@ -281,6 +288,7 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
           <ChangePassword />
           <Stack direction="row" columnGap={3}>
             <Button
+              disabled={loading || !!noRedirect}
               sx={{ width: 100 }}
               variant="contained"
               onClick={async () => {
@@ -298,7 +306,10 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
                   body,
                 })
                 const redeploy = await redeployReq.json()
-                router.push(redeploy.redirect)
+                if (redeploy.status === 400) setError(JSON.stringify(redeploy))
+                else if (redeploy.redirect) router.push(redeploy.redirect)
+                else setNoRedirect(redeploy.message)
+                setLoading(false)
               }}
             >
               {loading ? <CircularProgress /> : 'deploy'}
@@ -307,6 +318,17 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
               cancel
             </Button>
           </Stack>
+          {error && (
+            <Typography variant="caption" color="red">
+              {error}
+            </Typography>
+          )}
+          {noRedirect && (
+            <Typography>
+              {noRedirect} <Link href="/deployments/latest">Click here</Link> to
+              track it&apos;s progress.
+            </Typography>
+          )}
         </Stack>
       </Stack>
     </>
