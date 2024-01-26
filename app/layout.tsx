@@ -17,47 +17,54 @@ export function generateViewport() {
   }
 }
 
-export const metadata: Metadata = {
-  metadataBase: new URL(`https://${process.env.VERCEL_URL}`),
-  title: process.env.NEXT_PUBLIC_NAME,
-  description: process.env.NEXT_PUBLIC_TITLE,
-  openGraph: {
+// type Props = {
+//   params: { id: string }
+//   searchParams: { [key: string]: string | string[] | undefined }
+// }
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    metadataBase: new URL(`https://${process.env.VERCEL_URL}`),
     title: process.env.NEXT_PUBLIC_NAME,
     description: process.env.NEXT_PUBLIC_TITLE,
-    siteName: process.env.NEXT_PUBLIC_NAME,
-    images: [`${process.env.NEXT_PUBLIC_HEADSHOT}`, '/default.svg'],
-    locale: 'en_US',
-    type: 'website',
-  },
-  robots: {
-    index: false,
-    follow: true,
-    nocache: true,
-    googleBot: {
-      index: true,
-      follow: false,
-      noimageindex: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+    openGraph: {
+      title: process.env.NEXT_PUBLIC_NAME,
+      description: process.env.NEXT_PUBLIC_TITLE,
+      siteName: process.env.NEXT_PUBLIC_NAME,
+      images: [process.env.NEXT_PUBLIC_HEADSHOT || '/default.svg'],
+      locale: 'en_US',
+      type: 'website',
     },
-  },
-  icons: {
-    icon: `${process.env.NEXT_PUBLIC_HEADSHOT}`,
-    shortcut: `${process.env.NEXT_PUBLIC_HEADSHOT}`,
-    apple: `${process.env.NEXT_PUBLIC_HEADSHOT}`,
-    other: {
-      rel: 'apple-touch-icon-precomposed',
-      url: `${process.env.NEXT_PUBLIC_HEADSHOT}`,
+    robots: {
+      index: false,
+      follow: true,
+      nocache: true,
+      googleBot: {
+        index: true,
+        follow: false,
+        noimageindex: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: process.env.NEXT_PUBLIC_NAME,
-    description: process.env.NEXT_PUBLIC_TITLE,
-    creator: '@s_pop3',
-    images: [`${process.env.NEXT_PUBLIC_HEADSHOT}`, '/default.svg'],
-  },
+    icons: {
+      icon: process.env.NEXT_PUBLIC_HEADSHOT,
+      shortcut: process.env.NEXT_PUBLIC_HEADSHOT,
+      apple: process.env.NEXT_PUBLIC_HEADSHOT,
+      other: {
+        rel: 'apple-touch-icon-precomposed',
+        url: process.env.NEXT_PUBLIC_HEADSHOT || '/default.svg',
+      },
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: process.env.NEXT_PUBLIC_NAME,
+      description: process.env.NEXT_PUBLIC_TITLE,
+      creator: '@s_pop3',
+      images: [process.env.NEXT_PUBLIC_HEADSHOT || '/default.svg'],
+    },
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
