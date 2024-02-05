@@ -1,6 +1,5 @@
 'use client'
 import React, { ReactNode, createContext, useMemo } from 'react'
-import { DEFAULT_PROPS } from '../constants'
 
 type EnvContextProps = Record<string, { value: string | undefined; label: string }>
 
@@ -37,21 +36,19 @@ export const EnvContextProvider: React.FC<{ children: ReactNode }> = ({
         label: 'Action Destination',
       },
       NEXT_PUBLIC_BG_COLOR: {
-        value: process.env.NEXT_PUBLIC_BG_COLOR || DEFAULT_PROPS.BG_COLOR,
+        value: process.env.NEXT_PUBLIC_BG_COLOR,
         label: 'Background Color',
       },
       NEXT_PUBLIC_BG_IMAGE: {
-        value: process.env.NEXT_PUBLIC_BG_IMAGE || DEFAULT_PROPS.BG_IMAGE,
+        value: process.env.NEXT_PUBLIC_BG_IMAGE,
         label: 'Background Image',
       },
       NEXT_PUBLIC_ACCENT_COLOR: {
-        value: process.env.NEXT_PUBLIC_ACCENT_COLOR || DEFAULT_PROPS.ACCENT_COLOR,
+        value: process.env.NEXT_PUBLIC_ACCENT_COLOR,
         label: 'Accent Color',
       },
       NEXT_PUBLIC_SECONDARY_ACCENT_COLOR: {
-        value:
-          process.env.NEXT_PUBLIC_SECONDARY_ACCENT_COLOR ||
-          DEFAULT_PROPS.SECONDARY_ACCENT_COLOR,
+        value: process.env.NEXT_PUBLIC_SECONDARY_ACCENT_COLOR,
         label: 'Secondary Accent Color',
       },
     }

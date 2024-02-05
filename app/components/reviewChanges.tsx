@@ -12,7 +12,6 @@ import {
 } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import React, { ReactNode, useContext, useState } from 'react'
-import { DEFAULT_PROPS } from '../constants'
 import { CmsContext } from '../context/cms'
 import { EnvContext } from '../context/env'
 import AddIcon from '@mui/icons-material/Add'
@@ -238,7 +237,7 @@ export const ReviewChanges: React.FC<{ children?: ReactNode }> = ({
                     label={env[key].label}
                     condition={
                       landingCms.backgroundImage.getter() !==
-                      (env.NEXT_PUBLIC_BG_IMAGE.value || DEFAULT_PROPS.BG_IMAGE)
+                      env.NEXT_PUBLIC_BG_IMAGE.value
                     }
                     oldSrc={env.NEXT_PUBLIC_BG_IMAGE.value!}
                     newSrc={landingCms.backgroundImage.getter()!}

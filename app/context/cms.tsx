@@ -1,5 +1,4 @@
 'use client'
-import { DEFAULT_PROPS } from '../constants'
 import { useSession } from 'next-auth/react'
 import React, {
   Dispatch,
@@ -25,37 +24,30 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const session = useSession()
 
-  const clientName = useState<string | undefined>(
-    process.env.NEXT_PUBLIC_NAME || 'not found'
-  )
-  const title = useState<string | undefined>(
-    process.env.NEXT_PUBLIC_TITLE || 'not found'
-  )
-  const subtitle = useState<string | undefined>(
-    process.env.NEXT_PUBLIC_SUBTITLE || 'not found'
-  )
-  const [socialUrls, setSocialUrls] = useState<string>(
-    process.env.NEXT_PUBLIC_SOCIALS || '[]'
+  const clientName = useState<string | undefined>(process.env.NEXT_PUBLIC_NAME)
+  const title = useState<string | undefined>(process.env.NEXT_PUBLIC_TITLE)
+  const subtitle = useState<string | undefined>(process.env.NEXT_PUBLIC_SUBTITLE)
+  const [socialUrls, setSocialUrls] = useState<string | undefined>(
+    process.env.NEXT_PUBLIC_SOCIALS
   )
   const actionDestination = useState(process.env.NEXT_PUBLIC_ACTION)
   const actionStatement = useState<string | undefined>(
-    process.env.NEXT_PUBLIC_ACTION_STATEMENT || 'not found'
+    process.env.NEXT_PUBLIC_ACTION_STATEMENT
   )
   const headshotSrc = useState<string | undefined>(
-    process.env.NEXT_PUBLIC_HEADSHOT || DEFAULT_PROPS.HEADSHOT
+    process.env.NEXT_PUBLIC_HEADSHOT || '/default.svg'
   )
   const backgroundColor = useState<string | undefined>(
-    process.env.NEXT_PUBLIC_BG_COLOR || DEFAULT_PROPS.BG_COLOR
+    process.env.NEXT_PUBLIC_BG_COLOR
   )
   const backgroundImage = useState<string | undefined>(
-    process.env.NEXT_PUBLIC_BG_IMAGE || DEFAULT_PROPS.BG_IMAGE
+    process.env.NEXT_PUBLIC_BG_IMAGE
   )
   const accentColor = useState<string | undefined>(
-    process.env.NEXT_PUBLIC_ACCENT_COLOR || DEFAULT_PROPS.ACCENT_COLOR
+    process.env.NEXT_PUBLIC_ACCENT_COLOR
   )
   const secondaryAccentColor = useState<string | undefined>(
-    process.env.NEXT_PUBLIC_SECONDARY_ACCENT_COLOR ||
-      DEFAULT_PROPS.SECONDARY_ACCENT_COLOR
+    process.env.NEXT_PUBLIC_SECONDARY_ACCENT_COLOR
   )
   const [password, setPassword] = useState<string>()
   const [hideAdmin, setHideAdmin] = useState<boolean>(
@@ -66,7 +58,9 @@ export const CmsContextProvider: React.FC<{ children: ReactNode }> = ({
 
   const socialsGetSet: SpenpoLandingCms['socialUrls'] = useMemo(() => {
     return {
-      getter: () => JSON.parse(socialUrls),
+      getter: () => {
+        if (socialUrls) return JSON.parse(socialUrls)
+      },
       setter: (socials?: string[]) => {
         setSocialUrls(JSON.stringify(socials))
       },
