@@ -22,18 +22,18 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-timer-hook": "^3.0.7",
-    "spenpo-landing": "^2.0.15"
+    "spenpo-landing": "^2.0.16"
   },
   "devDependencies": {
     "@types/node": "20.4.5",
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
     "eslint": "^8.56.0",
     "eslint-config-next": "14.0.4",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^8.0.3",
-    "lint-staged": "^15.2.1",
+    "lint-staged": "^15.2.2",
     "prettier": "^2.8.8",
     "typescript": "5.1.6"
   }
